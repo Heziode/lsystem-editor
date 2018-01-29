@@ -26,45 +26,41 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.L_System.L_System;
-with LSE.Model.L_System.Concrete_Builder;
-
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.L_System.L_System;
-use LSE.Model.L_System.Concrete_Builder;
-
 --  @description
---  Entry point of the app
+--  This package provide a abstract error system.
 --
-procedure Main is
-   LS : constant String := "60.00 -F++F++F F   F-F++F-F";
+package LSE.Model.L_System.Error is
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-begin
-   Initialize (T);
+   type Instance is abstract tagged private;
 
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
+   package Error_Type is
+      --  Type of errors supported for the L-System
+      type Instance is (
+                        --  Input contains unexpected character
+                        Unexpected_Character,
+                        --  Angle not found
+                        Missing_Angle,
+                        --  Value for angle is not in range
+                        Not_A_Angle,
+                        --  Axiom not found
+                        Missing_Axiom,
+                        --  Rule not found
+                        Missing_Rule,
+                        --  Ununderstandable rule found
+                        Invalid_Rule
+                       );
+   end Error_Type;
 
-   Put_Line (ASCII.LF & "##########" & ASCII.LF);
+   --  Getting the error
+   function Get_Error (This : Instance) return String is abstract;
 
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
+   --  Getting the type of this error
+   function Get_Error_Type (This : Instance) return Error_Type.Instance;
 
-   Put_Line (ASCII.LF & "L-System (object):");
+private
 
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-end Main;
+   type Instance is abstract tagged record
+      --  Type of this error
+      Error : Error_Type.Instance;
+   end record;
+end LSE.Model.L_System.Error;

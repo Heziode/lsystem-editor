@@ -26,45 +26,30 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.L_System.L_System;
-with LSE.Model.L_System.Concrete_Builder;
+with Ada.Strings.Unbounded;
 
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.L_System.L_System;
-use LSE.Model.L_System.Concrete_Builder;
+use Ada.Strings.Unbounded;
 
 --  @description
---  Entry point of the app
+--  This package define a invalid rule error.
 --
-procedure Main is
-   LS : constant String := "60.00 -F++F++F F   F-F++F-F";
+package LSE.Model.L_System.Error.Invalid_Rule is
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-begin
-   Initialize (T);
+   type Instance is new LSE.Model.L_System.Error.Instance with private;
 
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
+   --  Input contains invalid character
+   Error : exception;
 
-   Put_Line (ASCII.LF & "##########" & ASCII.LF);
+   Max_String_Length : constant Positive := 40;
 
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
+   function Initialize (Value : String) return Instance;
 
-   Put_Line (ASCII.LF & "L-System (object):");
+   overriding
+   function Get_Error (This : Instance) return String;
 
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-end Main;
+private
+
+   type Instance is new LSE.Model.L_System.Error.Instance with record
+      Value : Unbounded_String;
+   end record;
+end LSE.Model.L_System.Error.Invalid_Rule;

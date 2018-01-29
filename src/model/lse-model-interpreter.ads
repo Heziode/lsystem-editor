@@ -26,45 +26,24 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
 with LSE.Model.IO.Turtle;
-with LSE.Model.L_System.L_System;
-with LSE.Model.L_System.Concrete_Builder;
 
-use Ada.Text_IO;
 use LSE.Model.IO.Turtle;
-use LSE.Model.L_System.L_System;
-use LSE.Model.L_System.Concrete_Builder;
 
---  @description
---  Entry point of the app
+--  @summary
+--  Interpreter to draw the L-System
 --
-procedure Main is
-   LS : constant String := "60.00 -F++F++F F   F-F++F-F";
+--  @description
+--  This package provides methods for drawing a L-System using a LOGO Turtle.
+--
+package LSE.Model.Interpreter is
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-begin
-   Initialize (T);
+   --  Interpreter
+   type Instance is interface;
 
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
+   --  Drawing a L-System on a medium
+   --  @param T The LOGO Turtle used for drawing on a specific medium
+   procedure Interpret (This : Instance;
+                        T    : LSE.Model.IO.Turtle.Instance) is abstract;
 
-   Put_Line (ASCII.LF & "##########" & ASCII.LF);
-
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
-
-   Put_Line (ASCII.LF & "L-System (object):");
-
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-end Main;
+end LSE.Model.Interpreter;

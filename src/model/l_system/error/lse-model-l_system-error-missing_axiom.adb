@@ -26,45 +26,19 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.L_System.L_System;
-with LSE.Model.L_System.Concrete_Builder;
+package body LSE.Model.L_System.Error.Missing_Axiom is
 
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.L_System.L_System;
-use LSE.Model.L_System.Concrete_Builder;
+   function Initialize return Instance
+   is
+   begin
+      return Instance '(Error => Error_Type.Missing_Axiom);
+   end Initialize;
 
---  @description
---  Entry point of the app
---
-procedure Main is
-   LS : constant String := "60.00 -F++F++F F   F-F++F-F";
+   function Get_Error (This : Instance) return String
+   is
+      pragma Unreferenced (This);
+   begin
+      return "Axiom not found";
+   end Get_Error;
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-begin
-   Initialize (T);
-
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
-
-   Put_Line (ASCII.LF & "##########" & ASCII.LF);
-
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
-
-   Put_Line (ASCII.LF & "L-System (object):");
-
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-end Main;
+end LSE.Model.L_System.Error.Missing_Axiom;

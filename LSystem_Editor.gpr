@@ -1,0 +1,7 @@
+with "config.gpr";
+
+aggregate project LSystem_Editor is
+
+   for Project_Files use ("core.gpr", "gui.gpr");
+
+end LSystem_Editor;

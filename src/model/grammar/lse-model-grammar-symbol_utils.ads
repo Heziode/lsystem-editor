@@ -26,45 +26,26 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.L_System.L_System;
-with LSE.Model.L_System.Concrete_Builder;
+with Ada.Containers.Indefinite_Holders;
+with Ada.Containers.Indefinite_Doubly_Linked_Lists;
+with LSE.Model.Grammar.Symbol;
 
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.L_System.L_System;
-use LSE.Model.L_System.Concrete_Builder;
+use LSE.Model.Grammar.Symbol;
 
 --  @description
---  Entry point of the app
+--  This package provid a list of Symbol.
 --
-procedure Main is
-   LS : constant String := "60.00 -F++F++F F   F-F++F-F";
+package LSE.Model.Grammar.Symbol_Utils is
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-begin
-   Initialize (T);
+   package Ptr is new Ada.Containers.Indefinite_Holders
+     (Instance'Class);
+   use Ptr;
 
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
+   package P_List is
+     new Ada.Containers.Indefinite_Doubly_Linked_Lists
+       (
+        Element_Type => Ptr.Holder
+       );
+   use P_List;
 
-   Put_Line (ASCII.LF & "##########" & ASCII.LF);
-
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
-
-   Put_Line (ASCII.LF & "L-System (object):");
-
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-end Main;
+end LSE.Model.Grammar.Symbol_Utils;

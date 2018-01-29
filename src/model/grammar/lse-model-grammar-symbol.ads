@@ -26,45 +26,36 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.L_System.L_System;
-with LSE.Model.L_System.Concrete_Builder;
+with LSE.Model.Interpreter;
 
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.L_System.L_System;
-use LSE.Model.L_System.Concrete_Builder;
+use LSE.Model.Interpreter;
 
---  @description
---  Entry point of the app
+--  @summary
+--  Represent an abstract Symbol.
 --
-procedure Main is
-   LS : constant String := "60.00 -F++F++F F   F-F++F-F";
+--  @description
+--  This package represent an abstract Symbol. It allow to interpret the symbol
+--  for drawing on medium or get a representation of this.
+--
+package LSE.Model.Grammar.Symbol is
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-begin
-   Initialize (T);
+   --  Representation of symbole
+   type Instance is abstract
+   new LSE.Model.Interpreter.Instance with private;
 
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
+   --  Constructor
+   procedure Initialize (This : out Instance)
+   is abstract;
 
-   Put_Line (ASCII.LF & "##########" & ASCII.LF);
+   --  Getting representation of this symbol
+   function Get_Representation (This : Instance) return Character;
 
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
+   --  Put this symbol in STDIO
+   procedure Put (This : Instance);
 
-   Put_Line (ASCII.LF & "L-System (object):");
-
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-end Main;
+private
+   type Instance is abstract new LSE.Model.Interpreter.Instance with record
+      --  Representation of the Symbol
+      Representation : Character;
+   end record;
+end LSE.Model.Grammar.Symbol;

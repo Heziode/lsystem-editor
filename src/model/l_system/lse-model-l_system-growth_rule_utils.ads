@@ -26,45 +26,21 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.L_System.L_System;
-with LSE.Model.L_System.Concrete_Builder;
+with Ada.Containers.Indefinite_Doubly_Linked_Lists;
+with LSE.Model.L_System.Growth_Rule;
 
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.L_System.L_System;
-use LSE.Model.L_System.Concrete_Builder;
+use LSE.Model.L_System.Growth_Rule;
 
 --  @description
---  Entry point of the app
+--  This package provid a list of Growth rule.
 --
-procedure Main is
-   LS : constant String := "60.00 -F++F++F F   F-F++F-F";
+package LSE.Model.L_System.Growth_Rule_Utils is
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-begin
-   Initialize (T);
+   package P_List is
+     new Ada.Containers.Indefinite_Doubly_Linked_Lists
+       (
+        Element_Type => Instance'Class
+       );
+   use P_List;
 
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
-
-   Put_Line (ASCII.LF & "##########" & ASCII.LF);
-
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
-
-   Put_Line (ASCII.LF & "L-System (object):");
-
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-end Main;
+end LSE.Model.L_System.Growth_Rule_Utils;

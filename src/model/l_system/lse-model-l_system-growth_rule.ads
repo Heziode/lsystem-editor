@@ -26,45 +26,43 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.L_System.L_System;
-with LSE.Model.L_System.Concrete_Builder;
+with LSE.Model.Grammar.Symbol;
+with LSE.Model.Grammar.Symbol_Utils;
 
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.L_System.L_System;
-use LSE.Model.L_System.Concrete_Builder;
+use LSE.Model.Grammar.Symbol;
+use LSE.Model.Grammar.Symbol_Utils;
 
 --  @description
---  Entry point of the app
+--  This package define a L-System growth rule.
 --
-procedure Main is
-   LS : constant String := "60.00 -F++F++F F   F-F++F-F";
+package LSE.Model.L_System.Growth_Rule is
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-begin
-   Initialize (T);
+   --  Growth rule
+   type Instance is tagged private;
 
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
+   --  Constructor
+   --  @param H Head of the growth rule
+   --  @param B Body of the growth rule
+   procedure Initialize (This : out Instance;
+                         H    : Ptr.Holder;
+                         B    : LSE.Model.Grammar.Symbol_Utils.P_List.List);
 
-   Put_Line (ASCII.LF & "##########" & ASCII.LF);
+   --  Getting the head of this growth rule
+   --  @return Return the symbol that compose the head
+   function Get_Head (This : Instance)
+                      return LSE.Model.Grammar.Symbol.Instance'Class;
 
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
+   --  Getting the body of this growth rule
+   --  @return Return the symbol list that compose the body
+   function Get_Body (This : Instance)
+                      return LSE.Model.Grammar.Symbol_Utils.P_List.List;
 
-   Put_Line (ASCII.LF & "L-System (object):");
+private
 
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-end Main;
+   type Instance is tagged record
+      --  Head
+      H : Ptr.Holder;
+      --  Body
+      B : LSE.Model.Grammar.Symbol_Utils.P_List.List;
+   end record;
+end LSE.Model.L_System.Growth_Rule;

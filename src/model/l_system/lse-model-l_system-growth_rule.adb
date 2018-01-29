@@ -26,45 +26,28 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.L_System.L_System;
-with LSE.Model.L_System.Concrete_Builder;
+package body LSE.Model.L_System.Growth_Rule is
 
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.L_System.L_System;
-use LSE.Model.L_System.Concrete_Builder;
+   procedure Initialize (This : out Instance;
+                         H    : Ptr.Holder;
+                         B    : LSE.Model.Grammar.Symbol_Utils.P_List.List)
+   is
+   begin
+      This := Instance '(H => H,
+                         B => B);
+   end Initialize;
 
---  @description
---  Entry point of the app
---
-procedure Main is
-   LS : constant String := "60.00 -F++F++F F   F-F++F-F";
+   function Get_Head (This : Instance)
+                      return LSE.Model.Grammar.Symbol.Instance'Class
+   is
+   begin
+      return This.H.Element;
+   end Get_Head;
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-begin
-   Initialize (T);
-
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
-
-   Put_Line (ASCII.LF & "##########" & ASCII.LF);
-
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
-
-   Put_Line (ASCII.LF & "L-System (object):");
-
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-end Main;
+   function Get_Body (This : Instance)
+                      return LSE.Model.Grammar.Symbol_Utils.P_List.List
+   is
+   begin
+      return This.B;
+   end Get_Body;
+end LSE.Model.L_System.Growth_Rule;

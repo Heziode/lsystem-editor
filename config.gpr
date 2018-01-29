@@ -5,5 +5,6 @@ abstract project Config is
                                "-gnaty",
                                "-Wall",
                                "-Wextra",
+                               "-Wno-maybe-uninitialized", --  To prevent gcc bug
                                "-O3");
 end Config;

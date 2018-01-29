@@ -26,45 +26,31 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.L_System.L_System;
-with LSE.Model.L_System.Concrete_Builder;
+with Ada.Strings.Unbounded;
 
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.L_System.L_System;
-use LSE.Model.L_System.Concrete_Builder;
+use Ada.Strings.Unbounded;
 
 --  @description
---  Entry point of the app
+--  This package define a syntax error.
 --
-procedure Main is
-   LS : constant String := "60.00 -F++F++F F   F-F++F-F";
+package LSE.Model.L_System.Error.Unexpected_Character is
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-begin
-   Initialize (T);
+   type Instance is new LSE.Model.L_System.Error.Instance with private;
 
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
+   --  Rule is not valid
+   Error : exception;
 
-   Put_Line (ASCII.LF & "##########" & ASCII.LF);
+   function Initialize (Line, Column : Positive;
+                        Value : Unbounded_String)
+                        return Instance;
 
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
+   overriding
+   function Get_Error (This : Instance) return String;
 
-   Put_Line (ASCII.LF & "L-System (object):");
+private
 
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-end Main;
+   type Instance is new  LSE.Model.L_System.Error.Instance with record
+      Line, Column : Positive;
+      Value : Unbounded_String;
+   end record;
+end LSE.Model.L_System.Error.Unexpected_Character;

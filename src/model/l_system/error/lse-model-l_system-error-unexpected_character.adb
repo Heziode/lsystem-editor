@@ -26,45 +26,32 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.L_System.L_System;
-with LSE.Model.L_System.Concrete_Builder;
+with Ada.Strings;
 
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.L_System.L_System;
-use LSE.Model.L_System.Concrete_Builder;
+package body LSE.Model.L_System.Error.Unexpected_Character is
 
---  @description
---  Entry point of the app
---
-procedure Main is
-   LS : constant String := "60.00 -F++F++F F   F-F++F-F";
+   function Initialize (Line, Column : Positive;
+                        Value : Unbounded_String)
+                        return Instance
+   is
+   begin
+      return Instance '(Error_Type.Unexpected_Character,
+                        Line,
+                        Column,
+                        Value);
+   end Initialize;
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-begin
-   Initialize (T);
+   function Get_Error (This : Instance)
+                       return String
+   is
+      use Ada.Strings;
+      Str_Line   : constant Unbounded_String :=
+        Trim (To_Unbounded_String (Positive'Image (This.Line)), Left);
+      Str_Column : constant Unbounded_String :=
+        Trim (To_Unbounded_String (Positive'Image (This.Column)), Left);
+   begin
+      return "Syntax error at line " & To_String (Str_Line) & " column " &
+        To_String (Str_Column) & ": <" & To_String (This.Value) & ">";
+   end Get_Error;
 
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
-
-   Put_Line (ASCII.LF & "##########" & ASCII.LF);
-
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
-
-   Put_Line (ASCII.LF & "L-System (object):");
-
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-end Main;
+end LSE.Model.L_System.Error.Unexpected_Character;
