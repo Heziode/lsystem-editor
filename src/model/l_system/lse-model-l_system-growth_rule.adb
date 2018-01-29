@@ -44,6 +44,13 @@ package body LSE.Model.L_System.Growth_Rule is
       return This.H.Element;
    end Get_Head;
 
+   function Get_Head (This : Instance)
+                      return Ptr.Holder
+   is
+   begin
+      return This.H;
+   end Get_Head;
+
    function Get_Body (This : Instance)
                       return LSE.Model.Grammar.Symbol_Utils.P_List.List
    is

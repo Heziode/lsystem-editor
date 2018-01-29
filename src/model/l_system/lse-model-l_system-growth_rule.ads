@@ -52,6 +52,11 @@ package LSE.Model.L_System.Growth_Rule is
    function Get_Head (This : Instance)
                       return LSE.Model.Grammar.Symbol.Instance'Class;
 
+   --  Getting the head of this growth rule
+   --  @return Return the symbol that compose the head
+   function Get_Head (This : Instance)
+                      return Ptr.Holder;
+
    --  Getting the body of this growth rule
    --  @return Return the symbol list that compose the body
    function Get_Body (This : Instance)

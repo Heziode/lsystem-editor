@@ -84,6 +84,15 @@ begin
    if Read_LSystem (F, B, L) then
       Put_Line ("L-System (from file):");
       Put_Line (L.Get_LSystem);
+
+      for i in 0 .. 2 loop
+         L.Set_State (i);
+         L.Develop;
+
+         Put_Line ("Develop" & Natural'Image (L.Get_State) & ": '"
+                & L.Get_Value & "'");
+      end loop;
+
    else
       Put_Line ("L-System creation error:");
       Put_Line (B.Get_Error);

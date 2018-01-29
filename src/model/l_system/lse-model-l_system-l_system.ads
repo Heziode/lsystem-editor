@@ -26,9 +26,12 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;
 with LSE.Angle;
 with LSE.Model.L_System.Growth_Rule_Utils;
 with LSE.Model.Grammar.Symbol_Utils;
+
+use Ada.Strings.Unbounded;
 
 --  @description
 --  This package represent a L-System.
@@ -46,13 +49,20 @@ package LSE.Model.L_System.L_System is
                          LSE.Model.L_System.Growth_Rule_Utils.P_List.List);
 
    --  Accessor of current state
-   function Get_Current_State (This : Instance) return Natural;
+   function Get_State (This : Instance) return Natural;
 
    --  Mutator of current state
-   procedure Set_Current_State (This : out Instance; Value : Natural);
+   procedure Set_State (This : out Instance; Value : Natural);
 
    --  Getting a string representation of this L-System
    function Get_LSystem (This : Instance) return String;
+
+   --  Getting a string representation of the current development
+   function Get_Value (This : Instance) return String;
+
+   --  Getting the current development
+   function Get_Value (This : Instance)
+                       return LSE.Model.Grammar.Symbol_Utils.P_List.List;
 
    --  Develop this L-System to the next step
    procedure Develop (This : out Instance);
@@ -60,6 +70,8 @@ package LSE.Model.L_System.L_System is
 private
 
    type Instance is tagged record
+      --  State to develop
+      State         : Natural := 0;
       --  Currently developed state
       Current_State : Natural := 0;
       --  Axiom
@@ -72,4 +84,8 @@ private
       Current_Value : LSE.Model.Grammar.Symbol_Utils.P_List.List;
    end record;
 
+   --  Getting the string representation of a symbol list
+   function Get_Symbol_List (This :
+                                LSE.Model.Grammar.Symbol_Utils.P_List.List)
+                                return Unbounded_String;
 end LSE.Model.L_System.L_System;
