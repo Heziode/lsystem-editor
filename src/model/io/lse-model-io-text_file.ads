@@ -26,71 +26,51 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Characters.Latin_1;
+with Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with LSE.Model.IO.Text_File;
-with LSE.Model.IO.Turtle;
 with LSE.Model.L_System.L_System;
 with LSE.Model.L_System.Concrete_Builder;
 
+use Ada.Strings.Unbounded;
 use Ada.Text_IO;
-use LSE.Model.IO.Text_File;
-use LSE.Model.IO.Turtle;
 use LSE.Model.L_System.L_System;
 use LSE.Model.L_System.Concrete_Builder;
 
 --  @description
---  Entry point of the app
+--  This package provide a set of methods to read and write in text file.
 --
-procedure Main is
+package LSE.Model.IO.Text_File is
 
-   package LASCII renames Ada.Characters.Latin_1;
+   --  Open a file. By default, if file does not exist, it create it.
+   --  @param Auto True if auto create the file if it does not exist,
+   --    false otherwise
+   procedure Open_File (File : in out File_Type;
+                        Mode :        File_Mode;
+                        Path :        String;
+                        Auto :        Boolean := True);
 
-   LS : constant String := "60.00 -F++F++F F F-F++F-F";
+   --  Close a file.
+   procedure Close_File (File : in out File_Type);
 
-   Source : constant String := "data/kock-flake.ls";
-   Dest   : constant String := "data/kock-flake-save.ls";
+   --  Read the entire content of the file en place it into a variable
+   procedure Read (File   :        File_Type;
+                   Result :    out Unbounded_String);
 
-   T : LSE.Model.IO.Turtle.Instance;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-   F : File_Type;
-begin
-   Initialize (T);
+   --  Write the the content of a string in a file
+   procedure Write (File : in out File_Type;
+                    Item :        String);
 
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
+   --  Get L-System from a file.
+   --  @return Return True if a L-System has been read from the file
+   function Read_LSystem (File    :        File_Type;
+                          Builder : in out LSE.Model.L_System
+                          .Concrete_Builder.Instance;
+                          LS      : in out LSE.Model.L_System.
+                            L_System.Instance)
+                          return Boolean;
 
-   Put_Line (LASCII.LF & "##########" & LASCII.LF);
+   --  Write L-System in a file.
+   procedure Write_LSystem (File : in out File_Type;
+                            LS   : LSE.Model.L_System.L_System.Instance);
 
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
-
-   Put_Line (LASCII.LF & "L-System (object):");
-
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-
-   Put_Line (LASCII.LF & "##########" & LASCII.LF);
-
-   Open_File (F, In_File, Source, False);
-   if Read_LSystem (F, B, L) then
-      Put_Line ("L-System (from file):");
-      Put_Line (L.Get_LSystem);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
-   Close_File (F);
-
-   Open_File (F, Out_File, Dest);
-   Write_LSystem (F, L);
-   Close_File (F);
-end Main;
+end LSE.Model.IO.Text_File;

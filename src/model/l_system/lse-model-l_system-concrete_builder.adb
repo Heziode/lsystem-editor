@@ -76,6 +76,7 @@ package body LSE.Model.L_System.Concrete_Builder is
       Input         : Unbounded_String :=
         To_Unbounded_String (Trim (Item, Both));
    begin
+      This.Initialize;
 
       --  If Item is empty, no L-System found
       if Item = "" then

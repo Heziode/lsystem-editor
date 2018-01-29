@@ -26,12 +26,15 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
+with Ada.Characters.Latin_1;
 with Ada.Float_Text_IO;
 with Ada.Strings;
 with Ada.Strings.Unbounded;
 with LSE.Model.Grammar.Symbol;
 
 package body LSE.Model.L_System.L_System is
+
+   package L renames Ada.Characters.Latin_1;
 
    procedure Initialize (This  : out Instance;
                          Axiom : LSE.Model.Grammar.Symbol_Utils.P_List.List;
@@ -104,10 +107,9 @@ package body LSE.Model.L_System.L_System is
          Result : Unbounded_String := To_Unbounded_String ("");
       begin
          for Rule of This loop
-            Result := Result &
+            Result := Result & L.LF &
               To_Unbounded_String (Get_Representation (Rule.Get_Head) & "") &
-              " " & Get_Symbol_List (Rule.Get_Body) &
-              ASCII.LF;
+              L.Space & Get_Symbol_List (Rule.Get_Body);
          end loop;
          return Result;
       end Get_Rules;
@@ -123,10 +125,8 @@ package body LSE.Model.L_System.L_System is
            Aft  => 2,
            Exp  => 0);
 
-      return To_String (Trim (To_Unbounded_String (Angle_Str), Both) &
-                          ASCII.LF &
-                        Get_Symbol_List (This.Axiom) & ASCII.LF &
-                        Get_Rules (This.Rules) & ASCII.LF);
+      return To_String (Trim (To_Unbounded_String (Angle_Str), Both) & L.LF &
+                        Get_Symbol_List (This.Axiom) & Get_Rules (This.Rules));
    end Get_LSystem;
 
    procedure Develop (This : out Instance)
