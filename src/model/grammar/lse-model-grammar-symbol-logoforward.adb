@@ -38,6 +38,7 @@ package body LSE.Model.Grammar.Symbol.LogoForward is
                         T    : LSE.Model.IO.Turtle.Instance)
    is
    begin
+      --  TODO
       null;
    end Interpret;
 

@@ -44,6 +44,7 @@ package body LSE.Model.Grammar.Symbol.OtherSymbol is
                         T    : LSE.Model.IO.Turtle.Instance)
    is
    begin
+      --  TODO
       null;
    end Interpret;
 
