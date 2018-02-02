@@ -26,20 +26,13 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body LSE.Model.Grammar.Symbol.LogoAngleMinus is
+with Ada.Containers.Indefinite_Holders;
+with LSE.Model.IO.Turtle;
 
-   procedure Initialize (This : out Instance)
-   is
-   begin
-      This := Instance '(Representation => '-');
-   end Initialize;
+use LSE.Model.IO.Turtle;
 
-   procedure Interpret (This : in out Instance;
-                        T    : in out Holder)
-   is
-      pragma Unreferenced (This);
-   begin
-      T.Reference.Rotate_Negative;
-   end Interpret;
-
-end LSE.Model.Grammar.Symbol.LogoAngleMinus;
+--  @description
+--  This package provid a pointer of LOGO Turtle.
+--
+package LSE.Model.IO.Turtle_Utils is new Ada.Containers.Indefinite_Holders
+     (Turtle.Instance'Class);

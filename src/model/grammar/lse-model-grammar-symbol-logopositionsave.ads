@@ -26,10 +26,9 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with LSE.Model.IO.Turtle;
-with LSE.Model.Grammar.Symbol;
+with LSE.Model.IO.Turtle_Utils;
 
-use LSE.Model.Grammar.Symbol;
+use LSE.Model.IO.Turtle_Utils;
 
 --  @description
 --  This package provides position saving LOGO Turtle Symbol.
@@ -42,7 +41,7 @@ package LSE.Model.Grammar.Symbol.LogoPositionSave is
    procedure Initialize (This : out Instance);
 
    overriding
-   procedure Interpret (This : Instance;
-                        T    : LSE.Model.IO.Turtle.Instance);
+   procedure Interpret (This : in out Instance;
+                        T    : in out Holder);
 
 end LSE.Model.Grammar.Symbol.LogoPositionSave;

@@ -27,11 +27,15 @@
 -------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;
-with LSE.Angle;
+with LSE.Utils.Angle;
+with LSE.Model.Interpreter;
 with LSE.Model.L_System.Growth_Rule_Utils;
 with LSE.Model.Grammar.Symbol_Utils;
+with LSE.Model.IO.Turtle_Utils;
 
 use Ada.Strings.Unbounded;
+use LSE.Model.Interpreter;
+use LSE.Model.IO.Turtle_Utils;
 
 --  @description
 --  This package represent a L-System.
@@ -39,12 +43,12 @@ use Ada.Strings.Unbounded;
 package LSE.Model.L_System.L_System is
 
    --  Representing a L-System
-   type Instance is tagged private;
+   type Instance is new Interpreter.Instance with private;
 
    --  Constructor
    procedure Initialize (This  : out Instance;
                          Axiom : LSE.Model.Grammar.Symbol_Utils.P_List.List;
-                         Angle : LSE.Angle.Angle;
+                         Angle : LSE.Utils.Angle.Angle;
                          Rules :
                          LSE.Model.L_System.Growth_Rule_Utils.P_List.List);
 
@@ -67,9 +71,13 @@ package LSE.Model.L_System.L_System is
    --  Develop this L-System to the next step
    procedure Develop (This : out Instance);
 
+   overriding
+   procedure Interpret (This : in out Instance;
+                        T    : in out Holder);
+
 private
 
-   type Instance is tagged record
+   type Instance is new Interpreter.Instance with record
       --  State to develop
       State         : Natural := 0;
       --  Currently developed state
@@ -77,7 +85,7 @@ private
       --  Axiom
       Axiom         : LSE.Model.Grammar.Symbol_Utils.P_List.List;
       --  Angle
-      Angle         : LSE.Angle.Angle;
+      Angle         : LSE.Utils.Angle.Angle;
       --  Growth rules
       Rules         : LSE.Model.L_System.Growth_Rule_Utils.P_List.List;
       --  List of symbol of the currently developed state

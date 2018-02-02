@@ -26,17 +26,25 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body LSE.Angle is
+--  @description
+--  This package define a missing save character error.
+--
+package LSE.Model.L_System.Error.Missing_Save is
 
-   function Is_Angle (Value : String) return Boolean
-   is
-      Dummy : Angle;
-   begin
-      Dummy := Angle'Value (Value);
-      return True;
-   exception
-      when others =>
-         return False;
-   end Is_Angle;
+   type Instance is new LSE.Model.L_System.Error.Instance with private;
 
-end LSE.Angle;
+   --  Rule is not valid
+   Error : exception;
+
+   function Initialize (Line, Column : Positive) return Instance;
+
+   overriding
+   function Get_Error (This : Instance) return String;
+
+private
+
+   type Instance is new  LSE.Model.L_System.Error.Instance with record
+      Line, Column : Positive;
+   end record;
+
+end LSE.Model.L_System.Error.Missing_Save;

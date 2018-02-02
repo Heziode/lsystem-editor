@@ -26,20 +26,29 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body LSE.Model.Grammar.Symbol.LogoAngleMinus is
+with Ada.Strings;
+with Ada.Strings.Unbounded;
 
-   procedure Initialize (This : out Instance)
+package body LSE.Model.L_System.Error.Missing_Restore is
+
+   function Initialize (Line, Column : Positive) return Instance
    is
    begin
-      This := Instance '(Representation => '-');
+      return Instance '(Error_Type.Missing_Restore, Line, Column);
    end Initialize;
 
-   procedure Interpret (This : in out Instance;
-                        T    : in out Holder)
+   function Get_Error (This : Instance) return String
    is
-      pragma Unreferenced (This);
-   begin
-      T.Reference.Rotate_Negative;
-   end Interpret;
+      use Ada.Strings;
+      use Ada.Strings.Unbounded;
 
-end LSE.Model.Grammar.Symbol.LogoAngleMinus;
+      Str_Line   : constant Unbounded_String :=
+        Trim (To_Unbounded_String (Positive'Image (This.Line)), Left);
+      Str_Column : constant Unbounded_String :=
+        Trim (To_Unbounded_String (Positive'Image (This.Column)), Left);
+   begin
+      return "Missing save character for restore character defined at line " &
+        To_String (Str_Line) & " column " & To_String (Str_Column);
+   end Get_Error;
+
+end LSE.Model.L_System.Error.Missing_Restore;

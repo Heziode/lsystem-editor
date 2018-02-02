@@ -33,7 +33,9 @@ with GNAT.Regpat;
 with LSE.Model.L_System.Error.Invalid_Rule;
 with LSE.Model.L_System.Error.Missing_Angle;
 with LSE.Model.L_System.Error.Missing_Axiom;
+with LSE.Model.L_System.Error.Missing_Restore;
 with LSE.Model.L_System.Error.Missing_Rule;
+with LSE.Model.L_System.Error.Missing_Save;
 with LSE.Model.L_System.Error.Not_A_Angle;
 with LSE.Model.L_System.Error.Unexpected_Character;
 with LSE.Model.L_System.Factory;
@@ -110,6 +112,46 @@ package body LSE.Model.L_System.Concrete_Builder is
          raise Unexpected_Character.Error;
       end if;
 
+      --  Check Save/Restore
+      declare
+         Counter  : Integer := 0;
+         Line_S,
+         Column_S : Positive := 1;
+      begin
+         Line := 1;
+         Check_Save_Restore : for Str of V loop
+            Current_First := Str'First;
+            First := 1;
+            Last := 1;
+
+            for C of Str loop
+               if C = '[' then
+                  if Counter = 0 then
+                     Line_S   := Line;
+                     Column_S := Current_First;
+                  end if;
+                  Counter := Counter + 1;
+               elsif C = ']' then
+                  Counter := Counter - 1;
+                  if Counter < 0 then
+                     exit Check_Save_Restore;
+                  end if;
+               end if;
+               Current_First := Current_First + 1;
+            end loop;
+            Line := Line + 1;
+         end loop Check_Save_Restore;
+
+         if Counter < 0 then
+            This.Error.Append (Missing_Restore.Initialize (Line,
+                               Current_First));
+            raise Missing_Restore.Error;
+         elsif Counter > 0 then
+            This.Error.Append (Missing_Save.Initialize (Line_S, Column_S));
+            raise Missing_Save.Error;
+         end if;
+      end;
+
       --  Clean String (removing CR,LF and useless space)
       V.Clear;
       Parse (To_String (Input), L.LF & "", V);
@@ -150,7 +192,8 @@ package body LSE.Model.L_System.Concrete_Builder is
 
       return True;
    exception
-      when Unexpected_Character.Error | Make_Error =>
+      when Unexpected_Character.Error | Missing_Save.Error |
+           Missing_Restore.Error | Make_Error =>
          return False;
    end Make;
 

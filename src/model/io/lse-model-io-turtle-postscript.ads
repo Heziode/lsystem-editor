@@ -26,24 +26,69 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
+with Ada.Text_IO;
+with LSE.Model.IO.Turtle;
 with LSE.Model.IO.Turtle_Utils;
-with LSE.Model.Grammar.Symbol;
 
+use Ada.Text_IO;
+use LSE.Model.IO.Turtle;
 use LSE.Model.IO.Turtle_Utils;
-use LSE.Model.Grammar.Symbol;
 
 --  @description
---  This package provides left rotation LOGO Turtle Symbol.
+--  Represent a LOGO Turtle on PostScript medium
 --
-package LSE.Model.Grammar.Symbol.LogoAngleMinus is
+package LSE.Model.IO.Turtle.PostScript is
 
-   type Instance is new LSE.Model.Grammar.Symbol.Instance with null record;
+   --  Representing a LOGO Turtle for PostScript medium
+   type Instance is new Turtle.Instance with private;
+
+   --  Constructor
+   --  @File_Path Location where save the representation
+   function Initialize (File_Path : String)
+                        return Instance;
+
+   --  Put this Turtle configuration in STDIO
+   procedure Put (This : Instance'Class);
 
    overriding
-   procedure Initialize (This : out Instance);
+   procedure Configure (This : in out Instance);
 
    overriding
-   procedure Interpret (This : in out Instance;
-                        T    : in out Holder);
+   procedure Draw (This : in out Instance);
 
-end LSE.Model.Grammar.Symbol.LogoAngleMinus;
+   overriding
+   procedure Forward (This : in out Instance);
+
+   overriding
+   procedure Forward_Trace (This : in out Instance);
+
+   overriding
+   procedure Rotate_Positive (This  : in out Instance);
+
+   overriding
+   procedure Rotate_Negative (This  : in out Instance);
+
+   overriding
+   procedure UTurn (This : in out Instance);
+
+   overriding
+   procedure Position_Save (This : in out Instance);
+
+   overriding
+   procedure Position_Restore (This : in out Instance);
+
+private
+
+   procedure Go_Forward (This : in out Instance);
+
+   type Instance is new Turtle.Instance with record
+      --  Location to save the representation
+      File_Path : Unbounded_String;
+      File      : access File_Type := new File_Type;
+      Min_X,
+      Min_Y     : Float := Float'Last;
+      Max_X,
+      Max_Y     : Float := Float'First;
+   end record;
+
+end LSE.Model.IO.Turtle.PostScript;

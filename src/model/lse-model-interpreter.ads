@@ -26,9 +26,9 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with LSE.Model.IO.Turtle;
+with LSE.Model.IO.Turtle_Utils;
 
-use LSE.Model.IO.Turtle;
+use LSE.Model.IO.Turtle_Utils;
 
 --  @summary
 --  Interpreter to draw the L-System
@@ -43,7 +43,7 @@ package LSE.Model.Interpreter is
 
    --  Drawing a L-System on a medium
    --  @param T The LOGO Turtle used for drawing on a specific medium
-   procedure Interpret (This : Instance;
-                        T    : LSE.Model.IO.Turtle.Instance) is abstract;
+   procedure Interpret (This : in out Instance;
+                        T    : in out Holder) is abstract;
 
 end LSE.Model.Interpreter;

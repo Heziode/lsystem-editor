@@ -40,8 +40,8 @@ package body LSE.Model.Grammar.Symbol.OtherSymbol is
       This := Instance '(Representation => Representation);
    end Initialize;
 
-   procedure Interpret (This : Instance;
-                        T    : LSE.Model.IO.Turtle.Instance)
+   procedure Interpret (This : in out Instance;
+                        T    : in out Holder)
    is
    begin
       --  TODO

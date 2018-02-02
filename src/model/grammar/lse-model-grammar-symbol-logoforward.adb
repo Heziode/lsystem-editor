@@ -34,12 +34,12 @@ package body LSE.Model.Grammar.Symbol.LogoForward is
       This := Instance '(Representation => 'f');
    end Initialize;
 
-   procedure Interpret (This : Instance;
-                        T    : LSE.Model.IO.Turtle.Instance)
+   procedure Interpret (This : in out Instance;
+                        T    : in out Holder)
    is
+      pragma Unreferenced (This);
    begin
-      --  TODO
-      null;
+      T.Reference.Forward;
    end Interpret;
 
 end LSE.Model.Grammar.Symbol.LogoForward;

@@ -26,18 +26,13 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Vectors;
+with LSE.Utils.Coordinate_2D_Ptr;
+
+use LSE.Utils.Coordinate_2D_Ptr;
+
 --  @description
---  This package provides an Angle type
+--  This package provide a list of 2D coordinate.
 --
-package LSE.Angle is
-
-   --  Type angle in range [0.00;359.99]
-   type Angle is new Float range 0.00 .. 359.99;
-
-   --  Check if value passing in parameter is an angle
-   --
-   --  @param Value The value to check
-   --  @return Return True if the value is an angle, False otherwise
-   function Is_Angle (Value : String) return Boolean;
-
-end LSE.Angle;
+package LSE.Utils.Coordinate_2D_List is
+  new Ada.Containers.Indefinite_Vectors (Natural, Holder);

@@ -26,9 +26,10 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with LSE.Model.IO.Turtle;
+with LSE.Model.IO.Turtle_Utils;
 with LSE.Model.Grammar.Symbol;
 
+use LSE.Model.IO.Turtle_Utils;
 use LSE.Model.Grammar.Symbol;
 
 --  @description
@@ -44,8 +45,8 @@ package LSE.Model.Grammar.Symbol.OtherSymbol is
    procedure Initialize (This : out Instance; Representation : Character);
 
    overriding
-   procedure Interpret (This : Instance;
-                        T    : LSE.Model.IO.Turtle.Instance);
+   procedure Interpret (This : in out Instance;
+                        T    : in out Holder);
 
 private
 

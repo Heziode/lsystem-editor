@@ -29,13 +29,17 @@
 with Ada.Characters.Latin_1;
 with Ada.Text_IO;
 with LSE.Model.IO.Text_File;
+with LSE.Model.IO.Turtle_Utils;
 with LSE.Model.IO.Turtle;
+with LSE.Model.IO.Turtle.PostScript;
 with LSE.Model.L_System.L_System;
 with LSE.Model.L_System.Concrete_Builder;
 
 use Ada.Text_IO;
 use LSE.Model.IO.Text_File;
+use LSE.Model.IO.Turtle_Utils;
 use LSE.Model.IO.Turtle;
+use LSE.Model.IO.Turtle.PostScript;
 use LSE.Model.L_System.L_System;
 use LSE.Model.L_System.Concrete_Builder;
 
@@ -46,21 +50,27 @@ procedure Main is
 
    package LASCII renames Ada.Characters.Latin_1;
 
-   LS : constant String := "60.00 -F++F++F F F-F++F-F";
+   --   LS : constant String := "60.0 -F++F++F F F-F++F-F ";
+--   LS : constant String := "22.5 F F FF+[+F-F-F]-[-F+F+F]";
+--   LS : constant String := "30.0 F F FF+[+F[+F]-F+F]-[-F-[F]+F]";
+   LS : constant String := "45 F[++FF]--F F F";
+--   LS : constant String := "25 X X F-[X+X]+F[+FX]-X F FF";
 
-   Source : constant String := "data/kock-flake.ls";
-   Dest   : constant String := "data/kock-flake-save.ls";
+   Source : constant String := "data/test.ls";
+   Dest   : constant String := "data/test-save.ls";
+   PS     : constant String := "data/test.ps";
 
-   T : LSE.Model.IO.Turtle.Instance;
+   T : Holder;
    B : LSE.Model.L_System.Concrete_Builder.Instance;
    L : LSE.Model.L_System.L_System.Instance;
    F : File_Type;
 begin
-   Initialize (T);
+   T := To_Holder (Initialize (PS));
 
-   T.Set_Background_Color ("#FF0000");
-   T.Set_Forground_Color ("#0000FF");
-   Put (T);
+
+   T.Reference.Set_Background_Color ("#FF0000");
+   T.Reference.Set_Forground_Color ("#0000FF");
+   T.Element.Put;
 
    Put_Line (LASCII.LF & "##########" & LASCII.LF);
 
@@ -73,6 +83,10 @@ begin
    if B.Make (LS) then
       L := B.Get_Product;
       Put_Line (L.Get_LSystem);
+
+      L.Set_State (3);
+      L.Develop;
+      L.Interpret (T);
    else
       Put_Line ("L-System creation error:");
       Put_Line (B.Get_Error);

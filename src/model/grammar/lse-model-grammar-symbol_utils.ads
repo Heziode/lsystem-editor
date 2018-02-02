@@ -33,7 +33,7 @@ with LSE.Model.Grammar.Symbol;
 use LSE.Model.Grammar.Symbol;
 
 --  @description
---  This package provid a list of Symbol.
+--  This package provide a pointer and a list of Symbol.
 --
 package LSE.Model.Grammar.Symbol_Utils is
 

@@ -26,20 +26,25 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body LSE.Model.Grammar.Symbol.LogoAngleMinus is
+--  @description
+--  This package define a missing restore character error.
+--
+package LSE.Model.L_System.Error.Missing_Restore is
 
-   procedure Initialize (This : out Instance)
-   is
-   begin
-      This := Instance '(Representation => '-');
-   end Initialize;
+   type Instance is new LSE.Model.L_System.Error.Instance with private;
 
-   procedure Interpret (This : in out Instance;
-                        T    : in out Holder)
-   is
-      pragma Unreferenced (This);
-   begin
-      T.Reference.Rotate_Negative;
-   end Interpret;
+   --  Rule is not valid
+   Error : exception;
 
-end LSE.Model.Grammar.Symbol.LogoAngleMinus;
+   function Initialize (Line, Column : Positive) return Instance;
+
+   overriding
+   function Get_Error (This : Instance) return String;
+
+private
+
+   type Instance is new  LSE.Model.L_System.Error.Instance with record
+      Line, Column : Positive;
+   end record;
+
+end LSE.Model.L_System.Error.Missing_Restore;

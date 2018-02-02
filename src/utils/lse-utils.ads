@@ -26,20 +26,11 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body LSE.Model.Grammar.Symbol.LogoAngleMinus is
+--  @description
+--  This package encompass utility packages
+--
+package LSE.Utils is
 
-   procedure Initialize (This : out Instance)
-   is
-   begin
-      This := Instance '(Representation => '-');
-   end Initialize;
+   pragma Pure;
 
-   procedure Interpret (This : in out Instance;
-                        T    : in out Holder)
-   is
-      pragma Unreferenced (This);
-   begin
-      T.Reference.Rotate_Negative;
-   end Interpret;
-
-end LSE.Model.Grammar.Symbol.LogoAngleMinus;
+end LSE.Utils;

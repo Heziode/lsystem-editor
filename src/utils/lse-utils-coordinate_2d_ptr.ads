@@ -26,20 +26,13 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body LSE.Model.Grammar.Symbol.LogoAngleMinus is
+with Ada.Containers.Indefinite_Holders;
+with LSE.Utils.Coordinate_2D;
 
-   procedure Initialize (This : out Instance)
-   is
-   begin
-      This := Instance '(Representation => '-');
-   end Initialize;
+use LSE.Utils.Coordinate_2D;
 
-   procedure Interpret (This : in out Instance;
-                        T    : in out Holder)
-   is
-      pragma Unreferenced (This);
-   begin
-      T.Reference.Rotate_Negative;
-   end Interpret;
-
-end LSE.Model.Grammar.Symbol.LogoAngleMinus;
+--  @description
+--  This package provide a pointer of 2D coordinate.
+--
+package LSE.Utils.Coordinate_2D_Ptr is new Ada.Containers.Indefinite_Holders
+  (Coordinate);

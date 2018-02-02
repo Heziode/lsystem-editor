@@ -26,20 +26,31 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body LSE.Model.Grammar.Symbol.LogoAngleMinus is
+with Ada.Containers.Indefinite_Vectors;
 
-   procedure Initialize (This : out Instance)
-   is
-   begin
-      This := Instance '(Representation => '-');
-   end Initialize;
+--  @description
+--  This package provides an Angle type
+--
+package LSE.Utils.Angle is
 
-   procedure Interpret (This : in out Instance;
-                        T    : in out Holder)
-   is
-      pragma Unreferenced (This);
-   begin
-      T.Reference.Rotate_Negative;
-   end Interpret;
+   --  Define max range of cycle in degree
+   Degrees_Cycle : constant Float := 360.00;
 
-end LSE.Model.Grammar.Symbol.LogoAngleMinus;
+   --  Type angle in range [0.00;359.99]
+   subtype Angle is Float range 0.00 .. 359.99;
+
+   package List is new Ada.Containers.Indefinite_Vectors (Natural, Angle);
+
+   --  Check if value passing in parameter is an angle
+   --
+   --  @param Value The value to check
+   --  @return Return True if the value is an angle, False otherwise
+   function Is_Angle (Value : String) return Boolean;
+
+   --  Convert a Float value in valid Angle
+   --
+   --  @param Value The to convert
+   --  @return Return the value in Angle
+   function To_Angle (Value : Float) return Angle;
+
+end LSE.Utils.Angle;

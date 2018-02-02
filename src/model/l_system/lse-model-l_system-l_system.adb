@@ -39,7 +39,7 @@ package body LSE.Model.L_System.L_System is
 
    procedure Initialize (This  : out Instance;
                          Axiom : LSE.Model.Grammar.Symbol_Utils.P_List.List;
-                         Angle : LSE.Angle.Angle;
+                         Angle : LSE.Utils.Angle.Angle;
                          Rules :
                          LSE.Model.L_System.Growth_Rule_Utils.P_List.List)
    is
@@ -100,7 +100,7 @@ package body LSE.Model.L_System.L_System is
       -- Variables --
       ---------------
 
-      Angle_Str : String (1 .. Angle.Angle'Digits);
+      Angle_Str : String (1 .. LSE.Utils.Angle.Angle'Digits);
    begin
       Put (To   => Angle_Str,
            Item => Float (This.Angle),
@@ -184,5 +184,17 @@ package body LSE.Model.L_System.L_System is
       end loop;
       return Result;
    end Get_Symbol_List;
+
+   procedure Interpret (This : in out Instance;
+                        T    : in out Holder)
+   is
+   begin
+      T.Reference.Set_Angle (This.Angle);
+      T.Reference.Configure;
+      for Item of This.Current_Value loop
+         Item.Reference.Interpret (T);
+      end loop;
+      T.Reference.Draw;
+   end Interpret;
 
 end LSE.Model.L_System.L_System;

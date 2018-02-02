@@ -37,15 +37,17 @@ with LSE.Model.Grammar.Symbol.OtherSymbol;
 
 package body LSE.Model.L_System.Factory is
 
-   function Make_Axiom (Value : String) return List
+   function Make_Axiom (Value : String)
+                        return LSE.Model.Grammar.Symbol_Utils.P_List.List
    is
    begin
       return Make_Symbol_List (Value);
    end Make_Axiom;
 
-   function Make_Angle (Value : String) return LSE.Angle.Angle
+   function Make_Angle (Value : String) return LSE.Utils.Angle.Angle
    is
-      Result : constant LSE.Angle.Angle := LSE.Angle.Angle'Value (Value);
+      Result : constant LSE.Utils.Angle.Angle :=
+        LSE.Utils.Angle.Angle'Value (Value);
    begin
       return Result;
    end Make_Angle;
@@ -202,9 +204,10 @@ package body LSE.Model.L_System.Factory is
       end if;
    end Get_Symbol;
 
-   function Make_Symbol_List (Value : String) return List
+   function Make_Symbol_List (Value : String)
+                              return LSE.Model.Grammar.Symbol_Utils.P_List.List
    is
-      Result : List;
+      Result : LSE.Model.Grammar.Symbol_Utils.P_List.List;
    begin
       for C of Value loop
          Result.Append (Get_Symbol (C));

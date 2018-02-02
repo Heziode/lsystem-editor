@@ -26,10 +26,11 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with LSE.Model.IO.Turtle;
+with LSE.Model.IO.Turtle_Utils;
 with LSE.Model.Grammar.Symbol;
 
 use LSE.Model.Grammar.Symbol;
+use LSE.Model.IO.Turtle_Utils;
 
 --  @description
 --  This package provides forward (without trace) LOGO Turtle Symbol.
@@ -42,7 +43,7 @@ package LSE.Model.Grammar.Symbol.LogoForward is
    procedure Initialize (This : out Instance);
 
    overriding
-   procedure Interpret (This : Instance;
-                        T    : LSE.Model.IO.Turtle.Instance);
+   procedure Interpret (This : in out Instance;
+                        T    : in out Holder);
 
 end LSE.Model.Grammar.Symbol.LogoForward;

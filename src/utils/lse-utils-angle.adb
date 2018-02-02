@@ -26,20 +26,32 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body LSE.Model.Grammar.Symbol.LogoAngleMinus is
+package body LSE.Utils.Angle is
 
-   procedure Initialize (This : out Instance)
+   function Is_Angle (Value : String) return Boolean
    is
+      Tmp : Angle;
+      pragma Unreferenced (Tmp);
    begin
-      This := Instance '(Representation => '-');
-   end Initialize;
+      Tmp := Angle'Value (Value);
+      return True;
+   exception
+      when others =>
+         return False;
+   end Is_Angle;
 
-   procedure Interpret (This : in out Instance;
-                        T    : in out Holder)
+   function To_Angle (Value : Float) return Angle
    is
-      pragma Unreferenced (This);
+      Tmp : Float := Value;
    begin
-      T.Reference.Rotate_Negative;
-   end Interpret;
+      while Tmp not in Angle'Range loop
+         if Tmp < Angle'First then
+            Tmp := Tmp + Degrees_Cycle;
+         else
+            Tmp := Tmp - Degrees_Cycle;
+         end if;
+      end loop;
+      return Angle ((if Tmp = Degrees_Cycle then Angle'First else Tmp));
+   end To_Angle;
 
-end LSE.Model.Grammar.Symbol.LogoAngleMinus;
+end LSE.Utils.Angle;

@@ -26,20 +26,39 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body LSE.Model.Grammar.Symbol.LogoAngleMinus is
+--  @description
+--  This package provides an 2D coordinate type
+--
+package body LSE.Utils.Coordinate_2D is
 
-   procedure Initialize (This : out Instance)
+   function Initialize return Coordinate
    is
    begin
-      This := Instance '(Representation => '-');
+      return Coordinate '(0.0, 0.0);
    end Initialize;
 
-   procedure Interpret (This : in out Instance;
-                        T    : in out Holder)
+   function Get_X (This : Coordinate) return Float
    is
-      pragma Unreferenced (This);
    begin
-      T.Reference.Rotate_Negative;
-   end Interpret;
+      return This.X;
+   end Get_X;
 
-end LSE.Model.Grammar.Symbol.LogoAngleMinus;
+   procedure Set_X (This : out Coordinate; Value : Float)
+   is
+   begin
+      This.X := Value;
+   end Set_X;
+
+   function Get_Y (This : Coordinate) return Float
+   is
+   begin
+      return This.Y;
+   end Get_Y;
+
+   procedure Set_Y (This : out Coordinate; Value : Float)
+   is
+   begin
+      This.Y := Value;
+   end Set_Y;
+
+end LSE.Utils.Coordinate_2D;

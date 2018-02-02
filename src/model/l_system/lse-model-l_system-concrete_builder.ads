@@ -28,7 +28,7 @@
 
 with Ada.Containers.Indefinite_Vectors;
 with Ada.Strings.Unbounded;
-with LSE.Angle;
+with LSE.Utils.Angle;
 with LSE.Model.L_System.Error;
 with LSE.Model.L_System.Growth_Rule_Utils;
 with LSE.Model.L_System.L_System;
@@ -36,7 +36,7 @@ with LSE.Model.Grammar.Symbol_Utils;
 
 use Ada.Containers;
 use Ada.Strings.Unbounded;
-use LSE.Angle;
+use LSE.Utils.Angle;
 use LSE.Model.L_System.Error;
 use LSE.Model.L_System.Growth_Rule_Utils;
 use LSE.Model.L_System.L_System;
@@ -87,7 +87,7 @@ private
       --  Axiom
       Axiom : LSE.Model.Grammar.Symbol_Utils.P_List.List;
       --  Angle
-      Angle : LSE.Angle.Angle;
+      Angle : LSE.Utils.Angle.Angle;
       --  Growth rules
       Rules : LSE.Model.L_System.Growth_Rule_Utils.P_List.List;
       --  Contains all errors found

@@ -47,7 +47,11 @@ package LSE.Model.L_System.Error is
                         --  Rule not found
                         Missing_Rule,
                         --  Ununderstandable rule found
-                        Invalid_Rule
+                        Invalid_Rule,
+                        --  Save character as missing
+                        Missing_Save,
+                        --  Restore character as missing
+                        Missing_Restore
                        );
    end Error_Type;
 

@@ -27,12 +27,12 @@
 -------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with LSE.Angle;
+with LSE.Utils.Angle;
 with LSE.Model.Grammar.Symbol_Utils;
 with LSE.Model.L_System.Growth_Rule;
 
 use Ada.Containers;
-use LSE.Angle;
+use LSE.Utils.Angle;
 use LSE.Model.Grammar.Symbol_Utils.P_List;
 use LSE.Model.Grammar.Symbol_Utils.Ptr;
 
@@ -44,12 +44,13 @@ package LSE.Model.L_System.Factory is
    --  Make an axiom
    --  @param Value String to convert to a list of Symbol
    --  @return Return the list created
-   function Make_Axiom (Value : String) return List;
+   function Make_Axiom (Value : String)
+                        return LSE.Model.Grammar.Symbol_Utils.P_List.List;
 
    --  Make an angle
    --  @param Value String to convert to an angle
    --  @return Return the angle created
-   function Make_Angle (Value : String) return LSE.Angle.Angle;
+   function Make_Angle (Value : String) return LSE.Utils.Angle.Angle;
 
    --  Make a growth rule
    --  @param Value String to convert to a growth rule
@@ -81,6 +82,7 @@ private
    --  Create a list of symbol
    --  @param Value String to convert to symbol list
    --  @return Return the list of symbol created
-   function Make_Symbol_List (Value : String) return List;
+   function Make_Symbol_List (Value : String)
+                             return LSE.Model.Grammar.Symbol_Utils.P_List.List;
 
 end LSE.Model.L_System.Factory;
