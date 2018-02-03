@@ -44,7 +44,7 @@ package body LSE.Model.Grammar.Symbol.OtherSymbol is
                         T    : in out Holder)
    is
    begin
-      --  TODO
+      --  Nothing to do
       null;
    end Interpret;
 

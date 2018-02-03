@@ -90,6 +90,8 @@ private
       Rules         : LSE.Model.L_System.Growth_Rule_Utils.P_List.List;
       --  List of symbol of the currently developed state
       Current_Value : LSE.Model.Grammar.Symbol_Utils.P_List.List;
+      --  "Empty" turtle to compute L-System dimensions during develop
+      Fake_Turtle   : LSE.Model.IO.Turtle_Utils.Holder;
    end record;
 
    --  Getting the string representation of a symbol list

@@ -39,7 +39,7 @@ package body LSE.Model.Grammar.Symbol.LogoForwardTrace is
    is
       pragma Unreferenced (This);
    begin
-      T.Reference.Forward_Trace;
+      T.Reference.Forward (True);
    end Interpret;
 
 end LSE.Model.Grammar.Symbol.LogoForwardTrace;

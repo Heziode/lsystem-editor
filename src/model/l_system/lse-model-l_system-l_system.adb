@@ -30,6 +30,8 @@ with Ada.Characters.Latin_1;
 with Ada.Float_Text_IO;
 with Ada.Strings;
 with LSE.Model.Grammar.Symbol;
+with LSE.Model.IO.Turtle.Fake;
+with Ada.Text_IO; use Ada.Text_IO;
 
 package body LSE.Model.L_System.L_System is
 
@@ -43,13 +45,16 @@ package body LSE.Model.L_System.L_System is
                          Rules :
                          LSE.Model.L_System.Growth_Rule_Utils.P_List.List)
    is
+      use LSE.Model.IO.Turtle.Fake;
    begin
       This := Instance '(State         => 0,
                          Current_State => 0,
                          Axiom         => Axiom,
                          Angle         => Angle,
                          Rules         => Rules,
-                         Current_Value => Axiom);
+                         Current_Value => Axiom,
+                         Fake_Turtle   => To_Holder
+                           (LSE.Model.IO.Turtle.Fake.Initialize));
    end Initialize;
 
    function Get_State (This : Instance) return Natural
@@ -134,13 +139,17 @@ package body LSE.Model.L_System.L_System is
       Rule_Item : LSE.Model.Grammar.Symbol_Utils.Ptr.Holder;
       Item      : LSE.Model.Grammar.Symbol_Utils.Ptr.Holder;
    begin
-      if This.Current_State > This.State then
+      if This.Current_State = This.State then
+         return;
+      elsif This.Current_State > This.State then
          This.Current_State := 0;
          This.Current_Value := This.Axiom;
       end if;
 
       while This.Current_State < This.State loop
+         This.Current_State := This.Current_State + 1;
          Position := This.Current_Value.First;
+
          while Symbol_List.Has_Element (Position) loop
             Item := Symbol_List.Element (Position);
 
@@ -166,8 +175,10 @@ package body LSE.Model.L_System.L_System is
                Found := False;
             end if;
          end loop;
-         This.Current_State := This.Current_State + 1;
       end loop;
+
+      --  Get L-System dimensions
+      This.Interpret (This.Fake_Turtle);
    end Develop;
 
    function Get_Symbol_List (This :
@@ -190,6 +201,10 @@ package body LSE.Model.L_System.L_System is
    is
    begin
       T.Reference.Set_Angle (This.Angle);
+      T.Reference.Set_Max_X (This.Fake_Turtle.Element.Get_Max_X);
+      T.Reference.Set_Max_Y (This.Fake_Turtle.Element.Get_Max_Y);
+      T.Reference.Set_Min_X (This.Fake_Turtle.Element.Get_Min_X);
+      T.Reference.Set_Min_Y (This.Fake_Turtle.Element.Get_Min_Y);
       T.Reference.Configure;
       for Item of This.Current_Value loop
          Item.Reference.Interpret (T);

@@ -39,7 +39,7 @@ package body LSE.Model.Grammar.Symbol.LogoAngleMinus is
    is
       pragma Unreferenced (This);
    begin
-      T.Reference.Rotate_Negative;
+      T.Reference.Rotate_Anticlockwise;
    end Interpret;
 
 end LSE.Model.Grammar.Symbol.LogoAngleMinus;

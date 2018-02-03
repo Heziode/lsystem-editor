@@ -50,14 +50,14 @@ procedure Main is
 
    package LASCII renames Ada.Characters.Latin_1;
 
-   --   LS : constant String := "60.0 -F++F++F F F-F++F-F ";
+   LS : constant String := "60.0 -F++F++F F F-F++F-F ";
 --   LS : constant String := "22.5 F F FF+[+F-F-F]-[-F+F+F]";
 --   LS : constant String := "30.0 F F FF+[+F[+F]-F+F]-[-F-[F]+F]";
-   LS : constant String := "45 F[++FF]--F F F";
+--   LS : constant String := "45 F[++F[--FF]F]--F F F";
 --   LS : constant String := "25 X X F-[X+X]+F[+FX]-X F FF";
 
-   Source : constant String := "data/test.ls";
-   Dest   : constant String := "data/test-save.ls";
+   Source : constant String := "data/kock-flake.ls";
+   Dest   : constant String := "data/kock-flake-save.ls";
    PS     : constant String := "data/test.ps";
 
    T : Holder;
@@ -66,7 +66,13 @@ procedure Main is
    F : File_Type;
 begin
    T := To_Holder (Initialize (PS));
+   T.Reference.Set_Width (900);
+   T.Reference.Set_Height (700);
 
+   T.Reference.Set_Margin_Top (150.0);
+   T.Reference.Set_Margin_Right (100.0);
+   T.Reference.Set_Margin_Bottom (50.0);
+   T.Reference.Set_Margin_Left (200.0);
 
    T.Reference.Set_Background_Color ("#FF0000");
    T.Reference.Set_Forground_Color ("#0000FF");

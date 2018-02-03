@@ -57,16 +57,13 @@ package LSE.Model.IO.Turtle.PostScript is
    procedure Draw (This : in out Instance);
 
    overriding
-   procedure Forward (This : in out Instance);
+   procedure Forward (This : in out Instance; Trace : Boolean := False);
 
    overriding
-   procedure Forward_Trace (This : in out Instance);
+   procedure Rotate_Clockwise (This  : in out Instance);
 
    overriding
-   procedure Rotate_Positive (This  : in out Instance);
-
-   overriding
-   procedure Rotate_Negative (This  : in out Instance);
+   procedure Rotate_Anticlockwise (This  : in out Instance);
 
    overriding
    procedure UTurn (This : in out Instance);
@@ -79,16 +76,11 @@ package LSE.Model.IO.Turtle.PostScript is
 
 private
 
-   procedure Go_Forward (This : in out Instance);
-
    type Instance is new Turtle.Instance with record
       --  Location to save the representation
       File_Path : Unbounded_String;
+      --  File pointer
       File      : access File_Type := new File_Type;
-      Min_X,
-      Min_Y     : Float := Float'Last;
-      Max_X,
-      Max_Y     : Float := Float'First;
    end record;
 
 end LSE.Model.IO.Turtle.PostScript;

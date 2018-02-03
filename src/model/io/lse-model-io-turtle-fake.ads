@@ -26,20 +26,46 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-package body LSE.Model.Grammar.Symbol.LogoAnglePlus is
+with LSE.Model.IO.Turtle;
+with LSE.Model.IO.Turtle_Utils;
 
-   procedure Initialize (This : out Instance)
-   is
-   begin
-      This := Instance '(Representation => '+');
-   end Initialize;
+use LSE.Model.IO.Turtle;
+use LSE.Model.IO.Turtle_Utils;
 
-   procedure Interpret (This : in out Instance;
-                        T    : in out Holder)
-   is
-      pragma Unreferenced (This);
-   begin
-      T.Reference.Rotate_Clockwise;
-   end Interpret;
+--  @description
+--  Represent a fake LOGO Turtle. It is just used for compute l-system
+--  dimensions.
+--
+package LSE.Model.IO.Turtle.Fake is
 
-end LSE.Model.Grammar.Symbol.LogoAnglePlus;
+   --  Representing a fake LOGO Turtle
+   type Instance is new Turtle.Instance with null record;
+
+   --  Constructor
+   function Initialize return Instance;
+
+   overriding
+   procedure Configure (This : in out Instance);
+
+   overriding
+   procedure Draw (This : in out Instance);
+
+   overriding
+   procedure Forward (This : in out Instance; Trace : Boolean := False);
+
+   overriding
+   procedure Rotate_Clockwise (This  : in out Instance);
+
+   overriding
+   procedure Rotate_Anticlockwise (This  : in out Instance);
+
+   overriding
+   procedure UTurn (This : in out Instance);
+
+   overriding
+   procedure Position_Save (This : in out Instance);
+
+   overriding
+   procedure Position_Restore (This : in out Instance);
+
+end LSE.Model.IO.Turtle.Fake;
