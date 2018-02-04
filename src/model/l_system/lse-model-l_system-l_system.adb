@@ -140,6 +140,12 @@ package body LSE.Model.L_System.L_System is
       Item      : LSE.Model.Grammar.Symbol_Utils.Ptr.Holder;
    begin
       if This.Current_State = This.State then
+         if This.Fake_Turtle.Element.Get_Max_X = 0.0 and
+           This.Fake_Turtle.Element.Get_Min_X = 0.0
+         then
+            --  Get L-System dimensions
+            This.Interpret (This.Fake_Turtle);
+         end if;
          return;
       elsif This.Current_State > This.State then
          This.Current_State := 0;

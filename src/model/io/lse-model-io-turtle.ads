@@ -48,6 +48,9 @@ package LSE.Model.IO.Turtle is
    --  Representing a LOGO Turtle
    type Instance is abstract tagged private;
 
+   --  Raise when Max_X - Min_X or Max_Y - Min_Y give 0
+   Divide_By_Zero : exception;
+
    --  Default width of the medium
    Default_Width            : constant Positive := 600;
    --  Default height of the medium
@@ -55,8 +58,8 @@ package LSE.Model.IO.Turtle is
    --  Default background color
    Default_Background_Color : constant Unbounded_String :=
      To_Unbounded_String ("");
-   --  Default forground color
-   Default_Forground_Color  : constant Unbounded_String :=
+   --  Default foreground color
+   Default_Foreground_Color  : constant Unbounded_String :=
      To_Unbounded_String ("#000000");
    --  Default size of line that will be drawn
    Default_Line_Size        : constant Float := 100.0;
@@ -78,8 +81,8 @@ package LSE.Model.IO.Turtle is
    procedure Set_Background_Color (This : out Instance'Class;
                                    Value : String);
 
-   --  Mutator of forground color
-   procedure Set_Forground_Color (This : out Instance'Class; Value : String);
+   --  Mutator of foreground color
+   procedure Set_Foreground_Color (This : out Instance'Class; Value : String);
 
    --  Mutator of angle
    procedure Set_Angle (This : out Instance'Class;
@@ -122,19 +125,19 @@ package LSE.Model.IO.Turtle is
    function Get_Margin_Left (This : Instance'Class) return Float;
 
    --  Mutator of margin top
-   procedure Set_Margin_Top (This : out Instance'Class; Value : Float);
+   procedure Set_Margin_Top (This : out Instance'Class; Value : Natural);
 
    --  Mutator of margin right
-   procedure Set_Margin_Right (This : out Instance'Class; Value : Float);
+   procedure Set_Margin_Right (This : out Instance'Class; Value : Natural);
 
    --  Mutator of margin Bottom
-   procedure Set_Margin_Bottom (This : out Instance'Class; Value : Float);
+   procedure Set_Margin_Bottom (This : out Instance'Class; Value : Natural);
 
    --  Mutator of margin left
-   procedure Set_Margin_Left (This : out Instance'Class; Value : Float);
+   procedure Set_Margin_Left (This : out Instance'Class; Value : Natural);
 
    --  Set margin all of medium
-   procedure Set_Margin (This : out Instance'Class; Value : Float);
+   procedure Set_Margin (This : out Instance'Class; Value : Natural);
 
    --  Put this Turtle configuration in STDIO
    procedure Put (This : Instance'Class);
@@ -182,8 +185,8 @@ private
       Height             : Positive := Default_Height;
       --  Background color
       Background_Color   : Unbounded_String := Default_Background_Color;
-      --  Forground color
-      Forground_Color    : Unbounded_String := Default_Forground_Color;
+      --  foreground color
+      Foreground_Color    : Unbounded_String := Default_Foreground_Color;
       --  Size of line that will be drawn
       Line_Size          : Float := Default_Line_Size;
       --  Angle step

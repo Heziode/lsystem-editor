@@ -26,20 +26,23 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Characters.Latin_1;
 with Ada.Text_IO;
+with GNAT.Command_Line;
+with GNAT.Strings;
 with LSE.Model.IO.Text_File;
-with LSE.Model.IO.Turtle_Utils;
 with LSE.Model.IO.Turtle;
-with LSE.Model.IO.Turtle.PostScript;
+with LSE.Model.IO.Turtle_Factory;
+with LSE.Model.IO.Turtle_Utils;
 with LSE.Model.L_System.L_System;
 with LSE.Model.L_System.Concrete_Builder;
 
 use Ada.Text_IO;
+use GNAT.Command_Line;
+use GNAT.Strings;
 use LSE.Model.IO.Text_File;
-use LSE.Model.IO.Turtle_Utils;
 use LSE.Model.IO.Turtle;
-use LSE.Model.IO.Turtle.PostScript;
+use LSE.Model.IO.Turtle_Factory;
+use LSE.Model.IO.Turtle_Utils;
 use LSE.Model.L_System.L_System;
 use LSE.Model.L_System.Concrete_Builder;
 
@@ -47,79 +50,173 @@ use LSE.Model.L_System.Concrete_Builder;
 --  Entry point of the app
 --
 procedure Main is
+   No_Input_File       : exception;
+   No_Export_File      : exception;
+   No_Export           : exception;
+   No_Develop          : exception;
+   LS_Creation         : exception;
+   Not_Implemented_Yet : exception;
 
-   package LASCII renames Ada.Characters.Latin_1;
+   Config           : Command_Line_Configuration;
+   GUI              : aliased Boolean := False;
+   Input_File       : aliased String_Access;
+   Output_File      : aliased String_Access;
+   Export           : aliased String_Access;
+   Export_File      : aliased String_Access;
+   Develop          : aliased Integer := 0;
+   Width            : aliased Integer := 0;
+   Height           : aliased Integer := 0;
+   Background_Color : aliased String_Access;
+   Foreground_Color : aliased String_Access;
+   Margin_Top       : aliased Integer := 0;
+   Margin_Right     : aliased Integer := 0;
+   Margin_Bottom    : aliased Integer := 0;
+   Margin_Left      : aliased Integer := 0;
 
-   LS : constant String := "60.0 -F++F++F F F-F++F-F ";
---   LS : constant String := "22.5 F F FF+[+F-F-F]-[-F+F+F]";
---   LS : constant String := "30.0 F F FF+[+F[+F]-F+F]-[-F-[F]+F]";
---   LS : constant String := "45 F[++F[--FF]F]--F F F";
---   LS : constant String := "25 X X F-[X+X]+F[+FX]-X F FF";
 
-   Source : constant String := "data/kock-flake.ls";
-   Dest   : constant String := "data/kock-flake-save.ls";
-   PS     : constant String := "data/test.ps";
-
-   T : Holder;
+   T : LSE.Model.IO.Turtle_Utils.Holder;
    B : LSE.Model.L_System.Concrete_Builder.Instance;
    L : LSE.Model.L_System.L_System.Instance;
    F : File_Type;
 begin
-   T := To_Holder (Initialize (PS));
-   T.Reference.Set_Width (900);
-   T.Reference.Set_Height (700);
+   Define_Switch (Config, GUI'Access,
+                  Long_Switch => "--gui",
+                  Help => "True for no-gui, False otherwise [default False]");
 
-   T.Reference.Set_Margin_Top (150.0);
-   T.Reference.Set_Margin_Right (100.0);
-   T.Reference.Set_Margin_Bottom (50.0);
-   T.Reference.Set_Margin_Left (200.0);
+   Define_Switch (Config, Input_File'Access, "-i:",
+                  Long_Switch => "--input=",
+                  Help => "Input file that contains a L-System");
 
-   T.Reference.Set_Background_Color ("#7f8c8d");
-   T.Reference.Set_Forground_Color ("#2ecc71");
-   T.Element.Put;
+   Define_Switch (Config, Output_File'Access, "-o:",
+                  Long_Switch => "--output=",
+                  Help => "Output file that will contains a L-System");
 
-   Put_Line (LASCII.LF & "##########" & LASCII.LF);
+   Define_Switch (Config, Export'Access, "-e:",
+                  Long_Switch => "--export=",
+                  Help => "Export format");
 
-   Put_Line ("L-System (constant):");
-   Put_Line (LS);
+   Define_Switch (Config, Export_File'Access, "-p:",
+                  Long_Switch => "--export-file=",
+                  Help => "Output file that will contains the " &
+                    "representation of the L-System");
 
-   Put_Line (LASCII.LF & "L-System (object):");
+   Define_Switch (Config, Develop'Access, "-d:",
+                  Long_Switch => "--develop=",
+                  Help => "number of step to develop");
 
-   Initialize (B);
-   if B.Make (LS) then
-      L := B.Get_Product;
-      Put_Line (L.Get_LSystem);
+   Define_Switch (Config, Width'Access, "-w:",
+                  Long_Switch => "--width=",
+                  Help => "Width of the output representation " &
+                    "(must be greater than 0 else is ignored)");
 
-      L.Set_State (3);
-      L.Develop;
-      L.Interpret (T);
-   else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
-   end if;
+   Define_Switch (Config, Height'Access, "-h:",
+                  Long_Switch => "--height=",
+                  Help => "Height of the output representation " &
+                    "(must be greater than 0 else is ignored)");
 
-   Put_Line (LASCII.LF & "##########" & LASCII.LF);
+   Define_Switch (Config, Background_Color'Access, "-b:",
+                  Long_Switch => "--background-color=",
+                  Help => "background color of the output representation " &
+                    "(in Hex, like #AABBCC or AABBCC)");
 
-   Open_File (F, In_File, Source, False);
-   if Read_LSystem (F, B, L) then
-      Put_Line ("L-System (from file):");
-      Put_Line (L.Get_LSystem);
+   Define_Switch (Config, Foreground_Color'Access, "-f:",
+                  Long_Switch => "--foreground-color=",
+                  Help => "foreground color of the output representation " &
+                    "(in Hex, like #AABBCC or AABBCC)");
 
-      for i in 0 .. 2 loop
-         L.Set_State (i);
+   Define_Switch (Config, Margin_Top'Access, "-mt:",
+                  Long_Switch => "--margin-top=",
+                  Help => "Enable margin top of the output representation " &
+                    "(must be greater than 0 else is ignored)");
+
+   Define_Switch (Config, Margin_Right'Access, "-mr:",
+                  Long_Switch => "--margin-right=",
+                  Help => "Enable margin right of the output representation " &
+                    "(must be greater than 0 else is ignored)");
+
+   Define_Switch (Config, Margin_Bottom'Access, "-mb:",
+                  Long_Switch => "--margin-bottom=",
+                  Help => "Enable margin bottom of the output representation" &
+                    " (must be greater than 0 else is ignored)");
+
+   Define_Switch (Config, Margin_Left'Access, "-ml:",
+                  Long_Switch => "--margin-left=",
+                  Help => "Enable margin left of the output representation " &
+                    "(must be greater than 0 else is ignored)");
+
+   Getopt (Config);
+
+   if not GUI then
+      if Input_File.all = "" then
+         raise No_Input_File;
+      elsif Export.all = "" then
+         raise No_Export;
+      elsif Export_File.all = "" then
+         raise No_Export_File;
+      elsif Develop < 0 then
+         raise No_Develop;
+      end if;
+
+      Make (T, Export.all, Export_File.all);
+
+      if Width > 0 then
+         T.Reference.Set_Width (Width);
+      end if;
+
+      if Height > 0 then
+         T.Reference.Set_Height (Height);
+      end if;
+
+      if Background_Color.all /= "" then
+         T.Reference.Set_Background_Color (Background_Color.all);
+      end if;
+
+      if Foreground_Color.all /= "" then
+         T.Reference.Set_Foreground_Color (Foreground_Color.all);
+      end if;
+
+      if Margin_Top > 0 then
+         T.Reference.Set_Margin_Top (Natural (Margin_Top));
+      end if;
+
+      if Margin_Right > 0 then
+         T.Reference.Set_Margin_Right (Margin_Right);
+      end if;
+
+      if Margin_Bottom > 0 then
+         T.Reference.Set_Margin_Bottom (Margin_Bottom);
+      end if;
+
+      if Margin_Left > 0 then
+         T.Reference.Set_Margin_Left (Margin_Left);
+      end if;
+
+      Initialize (B);
+
+      Open_File (F, In_File, Input_File.all, False);
+      if Read_LSystem (F, B, L) then
+         Put_Line ("L-System:");
+         Put_Line (L.Get_LSystem);
+
+         L.Set_State (Develop);
          L.Develop;
+         L.Interpret (T);
 
-         Put_Line ("Develop" & Natural'Image (L.Get_State) & ": '"
-                & L.Get_Value & "'");
-      end loop;
+         Close_File (F);
 
+         Put_Line ("L-System rendered for level" & Integer'Image (Develop));
+      else
+         Put_Line ("L-System creation error:");
+         Put_Line (B.Get_Error);
+         Close_File (F);
+         raise LS_Creation;
+      end if;
    else
-      Put_Line ("L-System creation error:");
-      Put_Line (B.Get_Error);
+      --  GUI Mode
+      raise Not_Implemented_Yet;
    end if;
-   Close_File (F);
 
-   Open_File (F, Out_File, Dest);
-   Write_LSystem (F, L);
-   Close_File (F);
+exception
+   when GNAT.Command_Line.Exit_From_Command_Line =>
+      return;
 end Main;

@@ -50,11 +50,11 @@ package body LSE.Model.IO.Turtle is
       This.Background_Color := To_Unbounded_String (Value);
    end Set_Background_Color;
 
-   procedure Set_Forground_Color (This : out Instance'Class; Value : String)
+   procedure Set_Foreground_Color (This : out Instance'Class; Value : String)
    is
    begin
-      This.Forground_Color := To_Unbounded_String (Value);
-   end Set_Forground_Color;
+      This.Foreground_Color := To_Unbounded_String (Value);
+   end Set_Foreground_Color;
 
    procedure Set_Angle (This : out Instance'Class;
                         Value : LSE.Utils.Angle.Angle)
@@ -135,31 +135,31 @@ package body LSE.Model.IO.Turtle is
       return This.Margin_Left;
    end Get_Margin_Left;
 
-   procedure Set_Margin_Top (This : out Instance'Class; Value : Float)
+   procedure Set_Margin_Top (This : out Instance'Class; Value : Natural)
    is
    begin
-      This.Margin_Top := Value;
+      This.Margin_Top := Float (Value);
    end Set_Margin_Top;
 
-   procedure Set_Margin_Right (This : out Instance'Class; Value : Float)
+   procedure Set_Margin_Right (This : out Instance'Class; Value : Natural)
    is
    begin
-      This.Margin_Right := Value;
+      This.Margin_Right := Float (Value);
    end Set_Margin_Right;
 
-   procedure Set_Margin_Bottom (This : out Instance'Class; Value : Float)
+   procedure Set_Margin_Bottom (This : out Instance'Class; Value : Natural)
    is
    begin
-      This.Margin_Bottom := Value;
+      This.Margin_Bottom := Float (Value);
    end Set_Margin_Bottom;
 
-   procedure Set_Margin_Left (This : out Instance'Class; Value : Float)
+   procedure Set_Margin_Left (This : out Instance'Class; Value : Natural)
    is
    begin
-      This.Margin_Left := Value;
+      This.Margin_Left := Float (Value);
    end Set_Margin_Left;
 
-   procedure Set_Margin (This : out Instance'Class; Value : Float)
+   procedure Set_Margin (This : out Instance'Class; Value : Natural)
    is
    begin
       This.Set_Margin_Top (Value);
@@ -177,12 +177,56 @@ package body LSE.Model.IO.Turtle is
       Put_Line ("    Width            :" & Positive'Image (This.Width));
       Put_Line ("    Height           :" & Positive'Image (This.Height));
       Put_Line ("    Background_Color : " & To_String (This.Background_Color));
-      Put_Line ("    Forground_Color  : " & To_String (This.Forground_Color));
+      Put_Line ("    Foreground_Color : " & To_String (This.Foreground_Color));
       Put ("    Line_Size        : ");
       Put (Item => This.Line_Size, Aft => 2, Exp => 0);
       New_Line;
       Put ("    Angle            :");
       Put (Item => Float (This.Angle), Aft => 2, Exp => 0);
+      New_Line;
+
+      Put ("    Max_X            :");
+      Put (Item => This.Max_X, Aft => 2, Exp => 0);
+      New_Line;
+
+      Put ("    Max_Y            :");
+      Put (Item => This.Max_Y, Aft => 2, Exp => 0);
+      New_Line;
+
+      Put ("    Min_X            :");
+      Put (Item => This.Min_X, Aft => 2, Exp => 0);
+      New_Line;
+
+      Put ("    Min_Y            :");
+      Put (Item => This.Min_Y, Aft => 2, Exp => 0);
+      New_Line;
+
+      Put ("    Ratio            :");
+      Put (Item => This.Ratio, Aft => 2, Exp => 0);
+      New_Line;
+
+      Put ("    Offset_X         :");
+      Put (Item => This.Offset_X, Aft => 2, Exp => 0);
+      New_Line;
+
+      Put ("    Offset_Y         :");
+      Put (Item => This.Offset_Y, Aft => 2, Exp => 0);
+      New_Line;
+
+      Put ("    Margin_Top       :");
+      Put (Item => This.Margin_Top, Aft => 2, Exp => 0);
+      New_Line;
+
+      Put ("    Margin_Right     :");
+      Put (Item => This.Margin_Right, Aft => 2, Exp => 0);
+      New_Line;
+
+      Put ("    Margin_Bottom    :");
+      Put (Item => This.Margin_Bottom, Aft => 2, Exp => 0);
+      New_Line;
+
+      Put ("    Margin_Left      :");
+      Put (Item => This.Margin_Left, Aft => 2, Exp => 0);
       New_Line;
    end Put;
 
@@ -193,6 +237,11 @@ package body LSE.Model.IO.Turtle is
       Boxed_Height : constant Float :=
         Float (This.Height) - This.Margin_Top - This.Margin_Bottom;
    begin
+      if (This.Max_X - This.Min_X) = 0.0 or (This.Max_Y - This.Min_Y) = 0.0
+      then
+         raise Divide_By_Zero;
+      end if;
+
       if Boxed_Width / (This.Max_X - This.Min_X) <=
         Boxed_Height / (This.Max_Y - This.Min_Y)
       then

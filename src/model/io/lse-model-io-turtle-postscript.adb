@@ -86,7 +86,7 @@ package body LSE.Model.IO.Turtle.PostScript is
                      "fill");
       end if;
 
-      To_RGB (To_String (This.Forground_Color), R, G, B);
+      To_RGB (To_String (This.Foreground_Color), R, G, B);
       Put_Line (This.File.all, RGB_To_String (R, G, B) & L.Space &
                   "setrgbcolor" & L.LF &
                   "newpath" & L.LF &
@@ -241,10 +241,4 @@ package body LSE.Model.IO.Turtle.PostScript is
       Put_Line (This.File.all, To_String (R));
    end Position_Restore;
 
-   procedure Put (This : Instance'Class)
-   is
-   begin
-      Turtle.Put (This);
-      Put_Line ("    File path        : " & To_String (This.File_Path));
-   end Put;
 end LSE.Model.IO.Turtle.PostScript;

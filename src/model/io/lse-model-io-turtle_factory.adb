@@ -26,58 +26,32 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.IO.Turtle_Utils;
-
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.IO.Turtle_Utils;
+with LSE.Model.IO.Turtle.PostScript;
 
 --  @description
---  Represent a LOGO Turtle on PostScript medium
+--  This package provide a Turtle factory
 --
-package LSE.Model.IO.Turtle.PostScript is
+package body LSE.Model.IO.Turtle_Factory is
 
-   --  Representing a LOGO Turtle for PostScript medium
-   type Instance is new Turtle.Instance with private;
+   procedure Make (This  : out LSE.Model.IO.Turtle_Utils.Holder;
+                   Value : String;
+                   Path  : String)
+   is
+      Unknown_Turtle_Type : exception;
 
-   --  Constructor
-   --  @File_Path Location where save the representation
-   function Initialize (File_Path : String)
-                        return Instance;
+      Found : Boolean := False;
+   begin
 
-   overriding
-   procedure Configure (This : in out Instance);
+      case Available_Export'Value (Value) is
+         when PS =>
+            Found := True;
+            This :=
+              To_Holder (LSE.Model.IO.Turtle.PostScript.Initialize (Path));
+      end case;
 
-   overriding
-   procedure Draw (This : in out Instance);
+      if not Found then
+         raise Unknown_Turtle_Type;
+      end if;
+   end Make;
 
-   overriding
-   procedure Forward (This : in out Instance; Trace : Boolean := False);
-
-   overriding
-   procedure Rotate_Clockwise (This  : in out Instance);
-
-   overriding
-   procedure Rotate_Anticlockwise (This  : in out Instance);
-
-   overriding
-   procedure UTurn (This : in out Instance);
-
-   overriding
-   procedure Position_Save (This : in out Instance);
-
-   overriding
-   procedure Position_Restore (This : in out Instance);
-
-private
-
-   type Instance is new Turtle.Instance with record
-      --  Location to save the representation
-      File_Path : Unbounded_String;
-      --  File pointer
-      File      : access File_Type := new File_Type;
-   end record;
-
-end LSE.Model.IO.Turtle.PostScript;
+end LSE.Model.IO.Turtle_Factory;

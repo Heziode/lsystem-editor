@@ -2,6 +2,9 @@ PROJECT=LSystem_Editor
 
 all: build
 
+run:
+	./bin/lsystem-editor -i ./data/kock-flake.ls -e PS -p ./data/kock-flake.ps -d 3
+
 build:
 	gprbuild -d -p -P${PROJECT}
 
