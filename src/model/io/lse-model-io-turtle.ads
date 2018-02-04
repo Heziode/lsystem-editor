@@ -54,7 +54,7 @@ package LSE.Model.IO.Turtle is
    Default_Height           : constant Positive := 600;
    --  Default background color
    Default_Background_Color : constant Unbounded_String :=
-     To_Unbounded_String ("#FFFFFF");
+     To_Unbounded_String ("");
    --  Default forground color
    Default_Forground_Color  : constant Unbounded_String :=
      To_Unbounded_String ("#000000");

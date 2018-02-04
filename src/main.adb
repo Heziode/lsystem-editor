@@ -74,8 +74,8 @@ begin
    T.Reference.Set_Margin_Bottom (50.0);
    T.Reference.Set_Margin_Left (200.0);
 
-   T.Reference.Set_Background_Color ("#FF0000");
-   T.Reference.Set_Forground_Color ("#0000FF");
+   T.Reference.Set_Background_Color ("#7f8c8d");
+   T.Reference.Set_Forground_Color ("#2ecc71");
    T.Element.Put;
 
    Put_Line (LASCII.LF & "##########" & LASCII.LF);

@@ -32,6 +32,7 @@ with Ada.Float_Text_IO;
 with Ada.Strings;
 with Ada.Strings.Fixed;
 with LSE.Model.IO.Text_File;
+with LSE.Utils.Colors;
 with LSE.Utils.Coordinate_2D;
 with LSE.Utils.Coordinate_2D_List;
 with LSE.Utils.Coordinate_2D_Ptr;
@@ -53,8 +54,10 @@ package body LSE.Model.IO.Turtle.PostScript is
    is
       use Ada.Strings;
       use Ada.Strings.Fixed;
-      use LSE.Utils.Coordinate_2D_Ptr;
       use LSE.Model.IO.Text_File;
+      use LSE.Utils.Colors;
+
+      R, G, B : Float := 0.0;
    begin
       This.Make_Offset;
       This.Stack_Angle.Clear;
@@ -66,7 +69,26 @@ package body LSE.Model.IO.Turtle.PostScript is
                   "%%BoundingBox: 0 0" & Positive'Image (This.Width) &
                   Positive'Image (This.Height) & L.LF &
                   "%%EndComments" & L.LF &
-                  "%%Page: picture" & L.LF &
+                  "%%Page: picture");
+
+      if This.Background_Color /= "" then
+         To_RGB (To_String (This.Background_Color), R, G, B);
+         Put_Line (This.File.all, RGB_To_String (R, G, B) & L.Space &
+                     "setrgbcolor" & L.LF &
+                     "newpath" & L.LF &
+                     "0 0 moveto" & L.LF &
+                     Trim (Positive'Image (This.Width), Left) &
+                     " 0 lineto " & L.LF &
+                     Trim (Positive'Image (This.Width), Left) &
+                     Positive'Image (This.Height) & " lineto" & L.LF & "0" &
+                     Positive'Image (This.Height) & " lineto" & L.LF &
+                     "closepath" & L.LF &
+                     "fill");
+      end if;
+
+      To_RGB (To_String (This.Forground_Color), R, G, B);
+      Put_Line (This.File.all, RGB_To_String (R, G, B) & L.Space &
+                  "setrgbcolor" & L.LF &
                   "newpath" & L.LF &
                   Trim (Fixed_Point'Image (Fixed_Point (This.Offset_X +
                     This.Margin_Left)), Left)
@@ -85,8 +107,8 @@ package body LSE.Model.IO.Turtle.PostScript is
    is
       use LSE.Model.IO.Text_File;
    begin
-      Put_Line (This.File.all, "stroke");
       Put_Line (This.File.all, "closepath");
+      Put_Line (This.File.all, "stroke");
       Put_Line (This.File.all, "showpage");
       Close_File (This.File.all);
    end Draw;
@@ -95,8 +117,6 @@ package body LSE.Model.IO.Turtle.PostScript is
    is
       use Ada.Float_Text_IO;
       use Ada.Numerics.Elementary_Functions;
-      use Ada.Strings;
-      use LSE.Utils.Coordinate_2D_Ptr;
 
       ------------------------
       --  Methods prototype --
