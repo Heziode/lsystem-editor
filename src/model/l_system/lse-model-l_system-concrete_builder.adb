@@ -197,11 +197,13 @@ package body LSE.Model.L_System.Concrete_Builder is
          return False;
    end Make;
 
-   function Get_Product (This : Instance) return L_System.Instance
+   function Get_Product (This   : Instance;
+                         Turtle : LSE.Model.IO.Turtle_Utils.Holder)
+                         return L_System.Instance
    is
       LS : L_System.Instance;
    begin
-      Initialize (LS, This.Axiom, This.Angle, This.Rules);
+      Initialize (LS, This.Axiom, This.Angle, This.Rules, Turtle);
       return LS;
    end Get_Product;
 

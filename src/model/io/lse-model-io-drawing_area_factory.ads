@@ -26,32 +26,26 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with LSE.Model.IO.Turtle.PostScript;
+with LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
+
+use LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
 
 --  @description
---  This package provide a Turtle factory
+--  This package provide a drawing area factory
 --
-package body LSE.Model.IO.Turtle_Factory is
+package LSE.Model.IO.Drawing_Area_Factory is
 
-   procedure Make (This  : out LSE.Model.IO.Turtle_Utils.Holder;
+   --  Make the drawing area
+   --  @param Value Type of the drawing area
+   --  @param Path Path where to save the L-System drawed
+   procedure Make (This  : out
+                     LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr.Holder;
                    Value : String;
-                   Path  : String)
-   is
-      Unknown_Turtle_Type : exception;
+                   Path  : String);
 
-      Found : Boolean := False;
-   begin
+private
 
-      case Available_Export'Value (Value) is
-         when PS =>
-            Found := True;
-            This :=
-              To_Holder (LSE.Model.IO.Turtle.PostScript.Initialize (Path));
-      end case;
+   --  Available drawing areas (export format)
+   type Available_Export is (PS);
 
-      if not Found then
-         raise Unknown_Turtle_Type;
-      end if;
-   end Make;
-
-end LSE.Model.IO.Turtle_Factory;
+end LSE.Model.IO.Drawing_Area_Factory;

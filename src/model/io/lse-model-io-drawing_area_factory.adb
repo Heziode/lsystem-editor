@@ -26,13 +26,32 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Holders;
-with LSE.Model.IO.Turtle;
+with LSE.Model.IO.Drawing_Area.PostScript;
 
-use LSE.Model.IO.Turtle;
+package body LSE.Model.IO.Drawing_Area_Factory is
 
---  @description
---  This package provid a pointer of LOGO Turtle.
---
-package LSE.Model.IO.Turtle_Utils is new Ada.Containers.Indefinite_Holders
-     (LSE.Model.IO.Turtle.Instance);
+   procedure Make (This  : out
+                     LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr.Holder;
+                   Value : String;
+                   Path  : String)
+   is
+      use LSE.Model.IO.Drawing_Area.PostScript;
+
+      Unknown_Drawing_Area_Type : exception;
+
+      Found : Boolean := False;
+   begin
+
+      case Available_Export'Value (Value) is
+         when PS =>
+            Found := True;
+            This := To_Holder
+              (LSE.Model.IO.Drawing_Area.PostScript.Initialize (Path));
+      end case;
+
+      if not Found then
+         raise Unknown_Drawing_Area_Type;
+      end if;
+   end Make;
+
+end LSE.Model.IO.Drawing_Area_Factory;

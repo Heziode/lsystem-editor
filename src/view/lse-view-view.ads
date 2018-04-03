@@ -26,58 +26,11 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-with LSE.Model.IO.Turtle;
-with LSE.Model.IO.Turtle_Utils;
-
-use Ada.Text_IO;
-use LSE.Model.IO.Turtle;
-use LSE.Model.IO.Turtle_Utils;
-
 --  @description
---  Represent a LOGO Turtle on PostScript medium
+--  This package provide a GUI make with Glade.
 --
-package LSE.Model.IO.Turtle.PostScript is
+package LSE.View.View is
 
-   --  Representing a LOGO Turtle for PostScript medium
-   type Instance is new Turtle.Instance with private;
+   
 
-   --  Constructor
-   --  @File_Path Location where save the representation
-   function Initialize (File_Path : String)
-                        return Instance;
-
-   overriding
-   procedure Configure (This : in out Instance);
-
-   overriding
-   procedure Draw (This : in out Instance);
-
-   overriding
-   procedure Forward (This : in out Instance; Trace : Boolean := False);
-
-   overriding
-   procedure Rotate_Clockwise (This  : in out Instance);
-
-   overriding
-   procedure Rotate_Anticlockwise (This  : in out Instance);
-
-   overriding
-   procedure UTurn (This : in out Instance);
-
-   overriding
-   procedure Position_Save (This : in out Instance);
-
-   overriding
-   procedure Position_Restore (This : in out Instance);
-
-private
-
-   type Instance is new Turtle.Instance with record
-      --  Location to save the representation
-      File_Path : Unbounded_String;
-      --  File pointer
-      File      : access File_Type := new File_Type;
-   end record;
-
-end LSE.Model.IO.Turtle.PostScript;
+end LSE.View.View;

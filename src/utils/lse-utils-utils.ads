@@ -26,21 +26,19 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with LSE.Model.IO.Turtle_Utils;
+with Ada.Text_IO.Editing;
 
-use LSE.Model.IO.Turtle_Utils;
+use Ada.Text_IO.Editing;
 
 --  @description
---  This package provide a Turtle factory
+--  This package provide a set of utilitary type and methods
 --
-package LSE.Model.IO.Turtle_Factory is
+package LSE.Utils.Utils is
 
-   procedure Make (This  : out LSE.Model.IO.Turtle_Utils.Holder;
-                   Value : String;
-                   Path  : String);
+   type Fixed_Point is delta 0.01 digits 18;
 
-private
+   package Formatted_IO is
+     new Ada.Text_IO.Editing.Decimal_Output (Fixed_Point);
+   use Formatted_IO;
 
-   type Available_Export is (PS);
-
-end LSE.Model.IO.Turtle_Factory;
+end LSE.Utils.Utils;
