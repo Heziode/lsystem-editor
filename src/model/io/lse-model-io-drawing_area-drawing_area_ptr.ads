@@ -27,12 +27,11 @@
 -------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Holders;
-with LSE.Model.IO.Turtle;
-
-use LSE.Model.IO.Turtle;
+with LSE.Model.IO.Drawing_Area;
 
 --  @description
---  This package provid a pointer of LOGO Turtle.
+--  This package provide a pointer of Drawing Area.
 --
-package LSE.Model.IO.Turtle_Utils is new Ada.Containers.Indefinite_Holders
-     (LSE.Model.IO.Turtle.Instance);
+package LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr is
+  new Ada.Containers.Indefinite_Holders
+    (LSE.Model.IO.Drawing_Area.Services'Class);

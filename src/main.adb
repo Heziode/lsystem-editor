@@ -27,21 +27,35 @@
 -------------------------------------------------------------------------------
 
 with Ada.Text_IO;
+with Ada.Command_Line;
+with Ada.Directories;
 with GNAT.Command_Line;
+with GNAT.Directory_Operations;
 with GNAT.Strings;
+with Gtk.Builder;
+with Gtk.Main;
+with Glib.Convert;
+with LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
+with LSE.Model.IO.Drawing_Area_Factory;
 with LSE.Model.IO.Text_File;
 with LSE.Model.IO.Turtle;
-with LSE.Model.IO.Turtle_Factory;
 with LSE.Model.IO.Turtle_Utils;
 with LSE.Model.L_System.L_System;
 with LSE.Model.L_System.Concrete_Builder;
 
 use Ada.Text_IO;
+use Ada.Command_Line;
+use Ada.Directories;
 use GNAT.Command_Line;
+use GNAT.Directory_Operations;
 use GNAT.Strings;
+use Gtk.Builder;
+use Gtk.Main;
+use Glib.Convert;
+use LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
+use LSE.Model.IO.Drawing_Area_Factory;
 use LSE.Model.IO.Text_File;
 use LSE.Model.IO.Turtle;
-use LSE.Model.IO.Turtle_Factory;
 use LSE.Model.IO.Turtle_Utils;
 use LSE.Model.L_System.L_System;
 use LSE.Model.L_System.Concrete_Builder;
@@ -50,12 +64,15 @@ use LSE.Model.L_System.Concrete_Builder;
 --  Entry point of the app
 --
 procedure Main is
-   No_Input_File       : exception;
-   No_Export_File      : exception;
-   No_Export           : exception;
-   No_Develop          : exception;
-   LS_Creation         : exception;
-   Not_Implemented_Yet : exception;
+
+   Main_UI  : constant String := "view.glade";
+   Exec_Dir : constant String := Dir_Name (Command_Name);
+
+   No_Input_File  : exception;
+   No_Export_File : exception;
+   No_Export      : exception;
+   No_Develop     : exception;
+   LS_Creation    : exception;
 
    Config           : Command_Line_Configuration;
    GUI              : aliased Boolean := False;
@@ -74,11 +91,14 @@ procedure Main is
    Margin_Left      : aliased Integer := 0;
 
 
-   T : LSE.Model.IO.Turtle_Utils.Holder;
-   B : LSE.Model.L_System.Concrete_Builder.Instance;
-   L : LSE.Model.L_System.L_System.Instance;
-   F : File_Type;
+   T       : LSE.Model.IO.Turtle_Utils.Holder;
+   B       : LSE.Model.L_System.Concrete_Builder.Instance;
+   L       : LSE.Model.L_System.L_System.Instance;
+   F       : File_Type;
+   Medium  : LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr.Holder;
+   Builder : Gtk_Builder;
 begin
+
    Define_Switch (Config, GUI'Access,
                   Long_Switch => "--gui",
                   Help => "True for no-gui, False otherwise [default False]");
@@ -157,44 +177,46 @@ begin
          raise No_Develop;
       end if;
 
-      Make (T, Export.all, Export_File.all);
+      T := To_Holder (Initialize);
+      Make (Medium, Export.all, Export_File.all);
+      T.Reference.Set_Medium (Medium);
 
       if Width > 0 then
-         T.Reference.Set_Width (Width);
+         Set_Width (T.Reference, Width);
       end if;
 
       if Height > 0 then
-         T.Reference.Set_Height (Height);
+         Set_Height (T.Reference, Height);
       end if;
 
       if Background_Color.all /= "" then
-         T.Reference.Set_Background_Color (Background_Color.all);
+         Set_Background_Color (T.Reference, Background_Color.all);
       end if;
 
       if Foreground_Color.all /= "" then
-         T.Reference.Set_Foreground_Color (Foreground_Color.all);
+         Set_Foreground_Color (T.Reference, Foreground_Color.all);
       end if;
 
       if Margin_Top > 0 then
-         T.Reference.Set_Margin_Top (Natural (Margin_Top));
+         Set_Margin_Top (T.Reference, Natural (Margin_Top));
       end if;
 
       if Margin_Right > 0 then
-         T.Reference.Set_Margin_Right (Margin_Right);
+         Set_Margin_Right (T.Reference, Margin_Right);
       end if;
 
       if Margin_Bottom > 0 then
-         T.Reference.Set_Margin_Bottom (Margin_Bottom);
+         Set_Margin_Bottom (T.Reference, Margin_Bottom);
       end if;
 
       if Margin_Left > 0 then
-         T.Reference.Set_Margin_Left (Margin_Left);
+         Set_Margin_Left (T.Reference, Margin_Left);
       end if;
 
       Initialize (B);
 
       Open_File (F, In_File, Input_File.all, False);
-      if Read_LSystem (F, B, L) then
+      if Read_LSystem (F, B, T, L) then
          Put_Line ("L-System:");
          Put_Line (L.Get_LSystem);
 
@@ -213,7 +235,11 @@ begin
       end if;
    else
       --  GUI Mode
-      raise Not_Implemented_Yet;
+      Ada.Directories.Set_Directory (Exec_Dir);
+
+      Gtk.Main.Init;
+      Gtk_New_From_File (Builder, Locale_To_UTF8 (Main_UI));
+      Gtk.Main.Main;
    end if;
 
 exception

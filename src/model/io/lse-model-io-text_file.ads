@@ -28,11 +28,13 @@
 
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
+with LSE.Model.IO.Turtle_Utils;
 with LSE.Model.L_System.L_System;
 with LSE.Model.L_System.Concrete_Builder;
 
 use Ada.Strings.Unbounded;
 use Ada.Text_IO;
+use LSE.Model.IO.Turtle_Utils;
 use LSE.Model.L_System.L_System;
 use LSE.Model.L_System.Concrete_Builder;
 
@@ -42,6 +44,8 @@ use LSE.Model.L_System.Concrete_Builder;
 package LSE.Model.IO.Text_File is
 
    --  Open a file. By default, if file does not exist, it create it.
+   --  @param Mode Mode to open the file
+   --  @param Path Location of the file
    --  @param Auto True if auto create the file if it does not exist,
    --    false otherwise
    procedure Open_File (File : in out File_Type;
@@ -53,23 +57,30 @@ package LSE.Model.IO.Text_File is
    procedure Close_File (File : in out File_Type);
 
    --  Read the entire content of the file en place it into a variable
+   --  @param Result Variable that will contains the result
    procedure Read (File   :        File_Type;
                    Result :    out Unbounded_String);
 
    --  Write the the content of a string in a file
+   --  @param Item Element to write
    procedure Write (File : in out File_Type;
                     Item :        String);
 
    --  Get L-System from a file.
+   --  @param Builder L-System builder
+   --  @param Turtle Reference of the turtle
+   --  @param LS Reference of the L-System
    --  @return Return True if a L-System has been read from the file
    function Read_LSystem (File    :        File_Type;
-                          Builder : in out LSE.Model.L_System
-                          .Concrete_Builder.Instance;
-                          LS      : in out LSE.Model.L_System.
-                            L_System.Instance)
+                          Builder : in out
+                            LSE.Model.L_System.Concrete_Builder.Instance;
+                          Turtle  : LSE.Model.IO.Turtle_Utils.Holder;
+                          LS      : in out
+                            LSE.Model.L_System.L_System.Instance)
                           return Boolean;
 
    --  Write L-System in a file.
+   --  @param LS L-System to write
    procedure Write_LSystem (File : in out File_Type;
                             LS   : LSE.Model.L_System.L_System.Instance);
 

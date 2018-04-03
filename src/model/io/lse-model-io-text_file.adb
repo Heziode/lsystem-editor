@@ -87,17 +87,18 @@ package body LSE.Model.IO.Text_File is
    end Write;
 
    function Read_LSystem (File    :        File_Type;
-                          Builder : in out LSE.Model.L_System.
-                            Concrete_Builder.Instance;
-                          LS      : in out LSE.Model.L_System.
-                            L_System.Instance)
-                          return Boolean
+                          Builder : in out
+                            LSE.Model.L_System.Concrete_Builder.Instance;
+                          Turtle  : LSE.Model.IO.Turtle_Utils.Holder;
+                          LS      : in out
+                            LSE.Model.L_System.L_System.Instance)
+                       return Boolean
    is
       Item : Unbounded_String;
    begin
       Read (File, Item);
       if Builder.Make (To_String (Item)) then
-         LS := Builder.Get_Product;
+         LS := Builder.Get_Product (Turtle);
          return True;
       else
          return False;

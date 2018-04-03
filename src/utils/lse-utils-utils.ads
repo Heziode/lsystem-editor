@@ -26,13 +26,19 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Holders;
-with LSE.Model.IO.Turtle;
+with Ada.Text_IO.Editing;
 
-use LSE.Model.IO.Turtle;
+use Ada.Text_IO.Editing;
 
 --  @description
---  This package provid a pointer of LOGO Turtle.
+--  This package provide a set of utilitary type and methods
 --
-package LSE.Model.IO.Turtle_Utils is new Ada.Containers.Indefinite_Holders
-     (LSE.Model.IO.Turtle.Instance);
+package LSE.Utils.Utils is
+
+   type Fixed_Point is delta 0.01 digits 18;
+
+   package Formatted_IO is
+     new Ada.Text_IO.Editing.Decimal_Output (Fixed_Point);
+   use Formatted_IO;
+
+end LSE.Utils.Utils;

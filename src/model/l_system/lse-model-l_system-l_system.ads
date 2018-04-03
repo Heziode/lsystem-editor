@@ -46,11 +46,12 @@ package LSE.Model.L_System.L_System is
    type Instance is new Interpreter.Instance with private;
 
    --  Constructor
-   procedure Initialize (This  : out Instance;
-                         Axiom : LSE.Model.Grammar.Symbol_Utils.P_List.List;
-                         Angle : LSE.Utils.Angle.Angle;
-                         Rules :
-                         LSE.Model.L_System.Growth_Rule_Utils.P_List.List);
+   procedure Initialize (This   : out Instance;
+                         Axiom  : LSE.Model.Grammar.Symbol_Utils.P_List.List;
+                         Angle  : LSE.Utils.Angle.Angle;
+                         Rules  :
+                         LSE.Model.L_System.Growth_Rule_Utils.P_List.List;
+                         Turtle : LSE.Model.IO.Turtle_Utils.Holder);
 
    --  Accessor of current state
    function Get_State (This : Instance) return Natural;
@@ -67,6 +68,14 @@ package LSE.Model.L_System.L_System is
    --  Getting the current development
    function Get_Value (This : Instance)
                        return LSE.Model.Grammar.Symbol_Utils.P_List.List;
+
+   --  Accessor of Turtle
+   function Get_Turtle (This : Instance)
+                        return LSE.Model.IO.Turtle_Utils.Holder;
+
+   --  Mutator of Turtle
+   procedure Set_Turtle (This  : out Instance;
+                         Value : LSE.Model.IO.Turtle_Utils.Holder);
 
    --  Develop this L-System to the next step
    procedure Develop (This : out Instance);
@@ -91,11 +100,15 @@ private
       --  List of symbol of the currently developed state
       Current_Value : LSE.Model.Grammar.Symbol_Utils.P_List.List;
       --  "Empty" turtle to compute L-System dimensions during develop
-      Fake_Turtle   : LSE.Model.IO.Turtle_Utils.Holder;
+      Turtle        : LSE.Model.IO.Turtle_Utils.Holder;
    end record;
 
    --  Getting the string representation of a symbol list
    function Get_Symbol_List (This :
                                 LSE.Model.Grammar.Symbol_Utils.P_List.List)
-                                return Unbounded_String;
+                             return Unbounded_String;
+
+   --  Compute dimension of the L-System
+   procedure Compute_Dimension (This : in out Instance);
+
 end LSE.Model.L_System.L_System;

@@ -26,21 +26,24 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;
 with Ada.Text_IO;
+with LSE.Model.IO.Drawing_Area;
 with LSE.Model.IO.Turtle;
-with LSE.Model.IO.Turtle_Utils;
+with LSE.Utils.Coordinate_2D;
 
+use Ada.Strings.Unbounded;
 use Ada.Text_IO;
+use LSE.Model.IO.Drawing_Area;
 use LSE.Model.IO.Turtle;
-use LSE.Model.IO.Turtle_Utils;
 
 --  @description
 --  Represent a LOGO Turtle on PostScript medium
 --
-package LSE.Model.IO.Turtle.PostScript is
+package LSE.Model.IO.Drawing_Area.PostScript is
 
    --  Representing a LOGO Turtle for PostScript medium
-   type Instance is new Turtle.Instance with private;
+   type Instance is new Services with private;
 
    --  Constructor
    --  @File_Path Location where save the representation
@@ -48,13 +51,16 @@ package LSE.Model.IO.Turtle.PostScript is
                         return Instance;
 
    overriding
-   procedure Configure (This : in out Instance);
+   procedure Configure (This   : in out Instance;
+                        Turtle : LSE.Model.IO.Turtle.Instance);
 
    overriding
    procedure Draw (This : in out Instance);
 
    overriding
-   procedure Forward (This : in out Instance; Trace : Boolean := False);
+   procedure Forward (This       : in out Instance;
+                      Coordinate : LSE.Utils.Coordinate_2D.Coordinate;
+                      Trace      : Boolean := False);
 
    overriding
    procedure Rotate_Clockwise (This  : in out Instance);
@@ -69,15 +75,16 @@ package LSE.Model.IO.Turtle.PostScript is
    procedure Position_Save (This : in out Instance);
 
    overriding
-   procedure Position_Restore (This : in out Instance);
+   procedure Position_Restore (This : in out Instance;
+                               X, Y : Fixed_Point);
 
 private
 
-   type Instance is new Turtle.Instance with record
+   type Instance is new Services with record
       --  Location to save the representation
       File_Path : Unbounded_String;
       --  File pointer
       File      : access File_Type := new File_Type;
    end record;
 
-end LSE.Model.IO.Turtle.PostScript;
+end LSE.Model.IO.Drawing_Area.PostScript;

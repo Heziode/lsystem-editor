@@ -30,7 +30,6 @@ with Ada.Characters.Latin_1;
 with Ada.Float_Text_IO;
 with Ada.Strings;
 with LSE.Model.Grammar.Symbol;
-with LSE.Model.IO.Turtle.Fake;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body LSE.Model.L_System.L_System is
@@ -39,13 +38,13 @@ package body LSE.Model.L_System.L_System is
 
    package Symbol_List renames LSE.Model.Grammar.Symbol_Utils.P_List;
 
-   procedure Initialize (This  : out Instance;
-                         Axiom : LSE.Model.Grammar.Symbol_Utils.P_List.List;
-                         Angle : LSE.Utils.Angle.Angle;
-                         Rules :
-                         LSE.Model.L_System.Growth_Rule_Utils.P_List.List)
+   procedure Initialize (This   : out Instance;
+                         Axiom  : LSE.Model.Grammar.Symbol_Utils.P_List.List;
+                         Angle  : LSE.Utils.Angle.Angle;
+                         Rules  :
+                         LSE.Model.L_System.Growth_Rule_Utils.P_List.List;
+                         Turtle : LSE.Model.IO.Turtle_Utils.Holder)
    is
-      use LSE.Model.IO.Turtle.Fake;
    begin
       This := Instance '(State         => 0,
                          Current_State => 0,
@@ -53,8 +52,7 @@ package body LSE.Model.L_System.L_System is
                          Angle         => Angle,
                          Rules         => Rules,
                          Current_Value => Axiom,
-                         Fake_Turtle   => To_Holder
-                           (LSE.Model.IO.Turtle.Fake.Initialize));
+                         Turtle        => Turtle);
    end Initialize;
 
    function Get_State (This : Instance) return Natural
@@ -129,6 +127,20 @@ package body LSE.Model.L_System.L_System is
       return This.Current_Value;
    end Get_Value;
 
+   function Get_Turtle (This : Instance)
+                        return LSE.Model.IO.Turtle_Utils.Holder
+   is
+   begin
+      return This.Turtle;
+   end Get_Turtle;
+
+   procedure Set_Turtle (This  : out Instance;
+                         Value : LSE.Model.IO.Turtle_Utils.Holder)
+   is
+   begin
+      This.Turtle := Value;
+   end Set_Turtle;
+
    procedure Develop (This : out Instance)
    is
       use LSE.Model.Grammar.Symbol;
@@ -140,11 +152,11 @@ package body LSE.Model.L_System.L_System is
       Item      : LSE.Model.Grammar.Symbol_Utils.Ptr.Holder;
    begin
       if This.Current_State = This.State then
-         if This.Fake_Turtle.Element.Get_Max_X = 0.0 and
-           This.Fake_Turtle.Element.Get_Min_X = 0.0
+         if This.Turtle.Element.Get_Max_X = 0.0 and
+           This.Turtle.Element.Get_Min_X = 0.0
          then
             --  Get L-System dimensions
-            This.Interpret (This.Fake_Turtle);
+            This.Compute_Dimension;
          end if;
          return;
       elsif This.Current_State > This.State then
@@ -184,7 +196,7 @@ package body LSE.Model.L_System.L_System is
       end loop;
 
       --  Get L-System dimensions
-      This.Interpret (This.Fake_Turtle);
+      This.Compute_Dimension;
    end Develop;
 
    function Get_Symbol_List (This :
@@ -207,15 +219,23 @@ package body LSE.Model.L_System.L_System is
    is
    begin
       T.Reference.Set_Angle (This.Angle);
-      T.Reference.Set_Max_X (This.Fake_Turtle.Element.Get_Max_X);
-      T.Reference.Set_Max_Y (This.Fake_Turtle.Element.Get_Max_Y);
-      T.Reference.Set_Min_X (This.Fake_Turtle.Element.Get_Min_X);
-      T.Reference.Set_Min_Y (This.Fake_Turtle.Element.Get_Min_Y);
+      T.Reference.Set_Max_X (This.Turtle.Element.Get_Max_X);
+      T.Reference.Set_Max_Y (This.Turtle.Element.Get_Max_Y);
+      T.Reference.Set_Min_X (This.Turtle.Element.Get_Min_X);
+      T.Reference.Set_Min_Y (This.Turtle.Element.Get_Min_Y);
       T.Reference.Configure;
       for Item of This.Current_Value loop
          Item.Reference.Interpret (T);
       end loop;
       T.Reference.Draw;
    end Interpret;
+
+   procedure Compute_Dimension (This : in out Instance)
+   is
+   begin
+      This.Turtle.Reference.Set_Dry_Run (True);
+      This.Interpret (This.Turtle);
+      This.Turtle.Reference.Set_Dry_Run (False);
+   end Compute_Dimension;
 
 end LSE.Model.L_System.L_System;

@@ -26,32 +26,11 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with LSE.Model.IO.Turtle.PostScript;
-
 --  @description
---  This package provide a Turtle factory
+--  This package provide a GUI make with Glade.
 --
-package body LSE.Model.IO.Turtle_Factory is
+package LSE.View.View is
 
-   procedure Make (This  : out LSE.Model.IO.Turtle_Utils.Holder;
-                   Value : String;
-                   Path  : String)
-   is
-      Unknown_Turtle_Type : exception;
+   
 
-      Found : Boolean := False;
-   begin
-
-      case Available_Export'Value (Value) is
-         when PS =>
-            Found := True;
-            This :=
-              To_Holder (LSE.Model.IO.Turtle.PostScript.Initialize (Path));
-      end case;
-
-      if not Found then
-         raise Unknown_Turtle_Type;
-      end if;
-   end Make;
-
-end LSE.Model.IO.Turtle_Factory;
+end LSE.View.View;

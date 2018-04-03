@@ -29,6 +29,7 @@
 with Ada.Containers.Indefinite_Vectors;
 with Ada.Strings.Unbounded;
 with LSE.Utils.Angle;
+with LSE.Model.IO.Turtle_Utils;
 with LSE.Model.L_System.Error;
 with LSE.Model.L_System.Growth_Rule_Utils;
 with LSE.Model.L_System.L_System;
@@ -37,6 +38,7 @@ with LSE.Model.Grammar.Symbol_Utils;
 use Ada.Containers;
 use Ada.Strings.Unbounded;
 use LSE.Utils.Angle;
+use LSE.Model.IO.Turtle_Utils;
 use LSE.Model.L_System.Error;
 use LSE.Model.L_System.Growth_Rule_Utils;
 use LSE.Model.L_System.L_System;
@@ -58,8 +60,11 @@ package LSE.Model.L_System.Concrete_Builder is
    function Make (This : out Instance; Item : String) return Boolean;
 
    --  Get the finished product
+   --  @param Turtle Reference to the turtle
    --  @return Return the finished product
-   function Get_Product (This : Instance) return L_System.Instance;
+   function Get_Product (This   : Instance;
+                         Turtle : LSE.Model.IO.Turtle_Utils.Holder)
+                         return L_System.Instance;
 
    --  Get encountered errors
    --  @return Return all errors messages
