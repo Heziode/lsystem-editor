@@ -10,6 +10,7 @@ run-gui:
 	./bin/lsystem-editor
 
 build:
+	mkdir -p bin/ressources
 	gprbuild -d -p -P${PROJECT}
 	cp ./src/view/ressources/* ./bin/ressources/
 
