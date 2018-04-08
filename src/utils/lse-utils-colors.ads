@@ -52,10 +52,28 @@ package LSE.Utils.Colors is
    procedure To_RGB (Input : String; R, G, B : out Float);
 
    --  Convert RGB value to string
-   function RGB_To_String (R, G, B : Natural) return String;
+   function RGB_To_String (R, G, B : Natural) return String
+     with Pre => (R <= 255 and
+                    G <= 255 and
+                      B <= 255);
 
    --  Convert RGB value to string
-   function RGB_To_String (R, G, B : Float) return String;
+   function RGB_To_String (R, G, B : Float) return String
+     with Pre => (R in 0.0 .. 1.0 and
+                    G in 0.0 .. 1.0 and
+                      B in 0.0 .. 1.0);
+
+   --  Convert RGB value to string (in Hex format, ex #AABBCC)
+   function RGB_To_Hex_String (R, G, B : Natural) return String
+     with Pre => (R <= 255 and
+                    G <= 255 and
+                      B <= 255);
+
+   --  Convert RGB value to string (in Hex format, ex #AABBCC)
+   function RGB_To_Hex_String (R, G, B : Float) return String
+     with Pre => (R in 0.0 .. 1.0 and
+                    G in 0.0 .. 1.0 and
+                      B in 0.0 .. 1.0);
 
 private
 

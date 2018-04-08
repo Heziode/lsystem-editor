@@ -27,24 +27,12 @@
 -------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Holders;
-with Ada.Strings.Unbounded;
-with Ada.Text_IO.Editing;
+with LSE.Model.L_System.L_System;
 
-use Ada.Strings.Unbounded;
-use Ada.Text_IO.Editing;
+use LSE.Model.L_System.L_System;
 
 --  @description
---  This package provide a set of utilitary type and methods
+--  This package provide a pointer of L-System
 --
-package LSE.Utils.Utils is
-
-   type Fixed_Point is delta 0.01 digits 18;
-
-   package Formatted_IO is
-     new Ada.Text_IO.Editing.Decimal_Output (Fixed_Point);
-   use Formatted_IO;
-
-   package US_Ptr is new Ada.Containers.Indefinite_Holders (Unbounded_String);
-   use US_Ptr;
-
-end LSE.Utils.Utils;
+package LSE.Model.L_System.L_System_Ptr is
+  new Ada.Containers.Indefinite_Holders (Instance'Class);

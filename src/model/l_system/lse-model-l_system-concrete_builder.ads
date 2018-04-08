@@ -28,21 +28,21 @@
 
 with Ada.Containers.Indefinite_Vectors;
 with Ada.Strings.Unbounded;
-with LSE.Utils.Angle;
+with LSE.Model.Grammar.Symbol_Utils;
 with LSE.Model.IO.Turtle_Utils;
 with LSE.Model.L_System.Error;
 with LSE.Model.L_System.Growth_Rule_Utils;
 with LSE.Model.L_System.L_System;
-with LSE.Model.Grammar.Symbol_Utils;
+with LSE.Utils.Angle;
 
 use Ada.Containers;
 use Ada.Strings.Unbounded;
-use LSE.Utils.Angle;
 use LSE.Model.IO.Turtle_Utils;
 use LSE.Model.L_System.Error;
 use LSE.Model.L_System.Growth_Rule_Utils;
 use LSE.Model.L_System.L_System;
 use LSE.Model.Grammar.Symbol_Utils;
+use LSE.Utils.Angle;
 
 --  @description
 --  This package provide a set of methods to build a L-System.
@@ -65,6 +65,14 @@ package LSE.Model.L_System.Concrete_Builder is
    function Get_Product (This   : Instance;
                          Turtle : LSE.Model.IO.Turtle_Utils.Holder)
                          return L_System.Instance;
+
+   --  Get the finished product
+   --  @param Turtle Reference to the turtle
+   --  @param LS Reference to the L-System
+   --  @return Return the finished product
+   procedure Get_Product (This   :     Instance;
+                          LS     : out L_System.Instance;
+                          Turtle :     LSE.Model.IO.Turtle_Utils.Holder);
 
    --  Get encountered errors
    --  @return Return all errors messages

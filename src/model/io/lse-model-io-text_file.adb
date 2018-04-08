@@ -74,7 +74,7 @@ package body LSE.Model.IO.Text_File is
          elsif End_Of_Page (File) then
             Skip_Page (File);
          else
-            Result := Result & To_Unbounded_String (Get_Line (File)) & L.Space;
+            Result := Result & To_Unbounded_String (Get_Line (File)) & L.LF;
          end if;
       end loop;
    end Read;
@@ -111,5 +111,25 @@ package body LSE.Model.IO.Text_File is
    begin
       Put_Line (File, LS.Get_LSystem);
    end Write_LSystem;
+
+   procedure Save_To_File (File_Path : String; Content : String)
+   is
+      File : File_Type;
+   begin
+      Open_File (File, Out_File, File_Path);
+      Write (File, Content);
+      Close_File (File);
+   end Save_To_File;
+
+   function Read_From_File (File_Path : String) return String
+   is
+      File : File_Type;
+      Item : Unbounded_String;
+   begin
+      Open_File (File, In_File, File_Path);
+      Read (File, Item);
+      Close_File (File);
+      return To_String (Item);
+   end Read_From_File;
 
 end LSE.Model.IO.Text_File;
