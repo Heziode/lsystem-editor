@@ -26,25 +26,33 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Holders;
-with Ada.Strings.Unbounded;
-with Ada.Text_IO.Editing;
+with LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
 
-use Ada.Strings.Unbounded;
-use Ada.Text_IO.Editing;
+use LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
 
 --  @description
---  This package provide a set of utilitary type and methods
+--  This package provide an export (drawing area) factory.
+--  It is used by GUI to found the good export format.
 --
-package LSE.Utils.Utils is
+package LSE.IO.Export_Factory is
 
-   type Fixed_Point is delta 0.01 digits 18;
+   --  Error raise when the type of drawing area is unknown
+   Unknown_Drawing_Area_Type : exception;
 
-   package Formatted_IO is
-     new Ada.Text_IO.Editing.Decimal_Output (Fixed_Point);
-   use Formatted_IO;
+   --  Make the drawing area
+   --  @param Value Type of the drawing area
+   --  @param Path Path where to save the L-System drawed
+   procedure Make (This  : out Holder;
+                   Value :     String;
+                   Path  :     String);
 
-   package US_Ptr is new Ada.Containers.Indefinite_Holders (Unbounded_String);
-   use US_Ptr;
+   --  Get file extension of export type
+   function Get_Extension (Value : String) return String;
 
-end LSE.Utils.Utils;
+private
+
+   --  Available drawing areas (export format)
+   type Available_Export is (PS);
+
+
+end LSE.IO.Export_Factory;

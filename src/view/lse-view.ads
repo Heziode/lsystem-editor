@@ -31,6 +31,6 @@
 --
 package LSE.View is
 
-  pragma Pure; 
+   pragma Pure;
 
 end LSE.View;

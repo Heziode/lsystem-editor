@@ -167,7 +167,8 @@ package LSE.Model.IO.Turtle is
 
    --  Mutator of medium
    procedure Set_Medium (This  : out Instance;
-                   Value : LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr.Holder);
+                         Value : LSE.Model.IO.Drawing_Area.
+                           Drawing_Area_Ptr.Holder);
 
    --  Mutator of dry run
    procedure Set_Dry_Run (This : out Instance; Value : Boolean);

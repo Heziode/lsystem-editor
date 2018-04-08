@@ -192,8 +192,8 @@ package body LSE.Model.L_System.Concrete_Builder is
 
       return True;
    exception
-      when Unexpected_Character.Error | Missing_Save.Error |
-           Missing_Restore.Error | Make_Error =>
+      when Missing_Angle.Error | Unexpected_Character.Error |
+           Missing_Save.Error | Missing_Restore.Error | Make_Error =>
          return False;
    end Make;
 
@@ -205,6 +205,14 @@ package body LSE.Model.L_System.Concrete_Builder is
    begin
       Initialize (LS, This.Axiom, This.Angle, This.Rules, Turtle);
       return LS;
+   end Get_Product;
+
+   procedure Get_Product (This   :     Instance;
+                          LS     : out L_System.Instance;
+                          Turtle :     LSE.Model.IO.Turtle_Utils.Holder)
+   is
+   begin
+      Initialize (LS, This.Axiom, This.Angle, This.Rules, Turtle);
    end Get_Product;
 
    function Get_Error (This : Instance) return String

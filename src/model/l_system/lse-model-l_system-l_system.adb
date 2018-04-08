@@ -30,7 +30,6 @@ with Ada.Characters.Latin_1;
 with Ada.Float_Text_IO;
 with Ada.Strings;
 with LSE.Model.Grammar.Symbol;
-with Ada.Text_IO; use Ada.Text_IO;
 
 package body LSE.Model.L_System.L_System is
 
@@ -218,6 +217,9 @@ package body LSE.Model.L_System.L_System is
                         T    : in out Holder)
    is
    begin
+      if This.Get_LSystem'Length = 0 then
+         return;
+      end if;
       T.Reference.Set_Angle (This.Angle);
       T.Reference.Set_Max_X (This.Turtle.Element.Get_Max_X);
       T.Reference.Set_Max_Y (This.Turtle.Element.Get_Max_Y);

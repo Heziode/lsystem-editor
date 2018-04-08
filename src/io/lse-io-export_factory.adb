@@ -26,25 +26,40 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Holders;
-with Ada.Strings.Unbounded;
-with Ada.Text_IO.Editing;
+with LSE.Model.IO.Drawing_Area.PostScript;
 
-use Ada.Strings.Unbounded;
-use Ada.Text_IO.Editing;
+package body LSE.IO.Export_Factory is
 
---  @description
---  This package provide a set of utilitary type and methods
---
-package LSE.Utils.Utils is
+   procedure Make (This  : out
+                     LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr.Holder;
+                   Value : String;
+                   Path  : String)
+   is
+      use LSE.Model.IO.Drawing_Area.PostScript;
 
-   type Fixed_Point is delta 0.01 digits 18;
+      Found : Boolean := False;
+   begin
+      case Available_Export'Value (Value) is
+         when PS =>
+            Found := True;
+            This := To_Holder
+              (LSE.Model.IO.Drawing_Area.PostScript.Initialize (Path));
+      end case;
 
-   package Formatted_IO is
-     new Ada.Text_IO.Editing.Decimal_Output (Fixed_Point);
-   use Formatted_IO;
+      if not Found then
+         raise Unknown_Drawing_Area_Type;
+      end if;
+   end Make;
 
-   package US_Ptr is new Ada.Containers.Indefinite_Holders (Unbounded_String);
-   use US_Ptr;
+   function Get_Extension (Value : String) return String
+   is
+   begin
+      case Available_Export'Value (Value) is
+         when PS =>
+            return ".ps";
+      end case;
 
-end LSE.Utils.Utils;
+      raise Unknown_Drawing_Area_Type;
+   end Get_Extension;
+
+end LSE.IO.Export_Factory;

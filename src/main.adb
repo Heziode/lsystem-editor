@@ -26,47 +26,45 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO;
 with Ada.Command_Line;
-with Ada.Directories;
+with Ada.Text_IO;
 with GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.Strings;
-with Gtk.Builder;
-with Gtk.Main;
-with Glib.Convert;
 with LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
 with LSE.Model.IO.Drawing_Area_Factory;
 with LSE.Model.IO.Text_File;
 with LSE.Model.IO.Turtle;
 with LSE.Model.IO.Turtle_Utils;
-with LSE.Model.L_System.L_System;
 with LSE.Model.L_System.Concrete_Builder;
+with LSE.Model.L_System.L_System;
+with LSE.Presenter.Presenter;
+with LSE.View.View;
 
-use Ada.Text_IO;
 use Ada.Command_Line;
-use Ada.Directories;
+use Ada.Text_IO;
 use GNAT.Command_Line;
 use GNAT.Directory_Operations;
 use GNAT.Strings;
-use Gtk.Builder;
-use Gtk.Main;
-use Glib.Convert;
 use LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
 use LSE.Model.IO.Drawing_Area_Factory;
 use LSE.Model.IO.Text_File;
 use LSE.Model.IO.Turtle;
 use LSE.Model.IO.Turtle_Utils;
-use LSE.Model.L_System.L_System;
 use LSE.Model.L_System.Concrete_Builder;
+use LSE.Model.L_System.L_System;
+use LSE.Presenter.Presenter;
+use LSE.View.View;
 
 --  @description
 --  Entry point of the app
 --
 procedure Main is
 
-   Main_UI  : constant String := "view.glade";
+   Main_UI  : constant String := "ressources/view.glade";
+   pragma Unreferenced (Main_UI);
    Exec_Dir : constant String := Dir_Name (Command_Name);
+   pragma Unreferenced (Exec_Dir);
 
    No_Input_File  : exception;
    No_Export_File : exception;
@@ -75,7 +73,7 @@ procedure Main is
    LS_Creation    : exception;
 
    Config           : Command_Line_Configuration;
-   GUI              : aliased Boolean := False;
+   No_GUI           : aliased Boolean := False;
    Input_File       : aliased String_Access;
    Output_File      : aliased String_Access;
    Export           : aliased String_Access;
@@ -96,11 +94,12 @@ procedure Main is
    L       : LSE.Model.L_System.L_System.Instance;
    F       : File_Type;
    Medium  : LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr.Holder;
-   Builder : Gtk_Builder;
+   View    : LSE.View.View.Instance;
+   Presenter : LSE.Presenter.Presenter.Instance;
 begin
 
-   Define_Switch (Config, GUI'Access,
-                  Long_Switch => "--gui",
+   Define_Switch (Config, No_GUI'Access,
+                  Long_Switch => "--no-gui",
                   Help => "True for no-gui, False otherwise [default False]");
 
    Define_Switch (Config, Input_File'Access, "-i:",
@@ -166,7 +165,7 @@ begin
 
    Getopt (Config);
 
-   if not GUI then
+   if No_GUI then
       if Input_File.all = "" then
          raise No_Input_File;
       elsif Export.all = "" then
@@ -235,11 +234,10 @@ begin
       end if;
    else
       --  GUI Mode
-      Ada.Directories.Set_Directory (Exec_Dir);
-
-      Gtk.Main.Init;
-      Gtk_New_From_File (Builder, Locale_To_UTF8 (Main_UI));
-      Gtk.Main.Main;
+      Presenter.Initialize;
+      View := Presenter.Get_View;
+      View.Set_Presenter (Presenter);
+      Presenter.Start;
    end if;
 
 exception

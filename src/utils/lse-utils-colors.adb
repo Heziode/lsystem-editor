@@ -28,6 +28,7 @@
 
 with Ada.Characters.Handling;
 with Ada.Characters.Latin_1;
+with Ada.Integer_Text_IO;
 with Ada.Strings;
 with Ada.Strings.Fixed;
 
@@ -142,5 +143,34 @@ package body LSE.Utils.Colors is
         L.Space & Fixed_Point'Image (Fixed_Point (G)) &
         L.Space & Fixed_Point'Image (Fixed_Point (B));
    end RGB_To_String;
+
+   function RGB_To_Hex_String (R, G, B : Natural) return String
+   is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+
+      Rs : String (1 .. 6);
+      Gs : String (1 .. 6);
+      Bs : String (1 .. 6);
+   begin
+      Ada.Integer_Text_IO.Put (Rs, R, 16);
+      Ada.Integer_Text_IO.Put (Gs, G, 16);
+      Ada.Integer_Text_IO.Put (Bs, B, 16);
+
+      return "#" & (if Rs (4 .. 4) = "#" then "0" else Rs (4 .. 4)) &
+      (if Rs (4 .. 4) = "#" then Rs (5 .. 5) else Rs (4 .. 4)) &
+      (if Gs (4 .. 4) = "#" then "0" else Gs (4 .. 4)) &
+      (if Gs (4 .. 4) = "#" then Gs (5 .. 5) else Gs (4 .. 4)) &
+      (if Bs (4 .. 4) = "#" then "0" else Bs (4 .. 4)) &
+      (if Bs (4 .. 4) = "#" then Bs (5 .. 5) else Bs (4 .. 4));
+   end RGB_To_Hex_String;
+
+   function RGB_To_Hex_String (R, G, B : Float) return String
+   is
+   begin
+      return RGB_To_Hex_String (Natural (R * 255.0),
+                                Natural (G * 255.0),
+                                Natural (B * 255.0));
+   end RGB_To_Hex_String;
 
 end LSE.Utils.Colors;

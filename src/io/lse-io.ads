@@ -26,25 +26,11 @@
 --  DEALINGS IN THE SOFTWARE.
 -------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Holders;
-with Ada.Strings.Unbounded;
-with Ada.Text_IO.Editing;
-
-use Ada.Strings.Unbounded;
-use Ada.Text_IO.Editing;
-
 --  @description
---  This package provide a set of utilitary type and methods
+--  This package encompass all packages related to Input/Output.
 --
-package LSE.Utils.Utils is
+package LSE.IO is
 
-   type Fixed_Point is delta 0.01 digits 18;
+   pragma Pure;
 
-   package Formatted_IO is
-     new Ada.Text_IO.Editing.Decimal_Output (Fixed_Point);
-   use Formatted_IO;
-
-   package US_Ptr is new Ada.Containers.Indefinite_Holders (Unbounded_String);
-   use US_Ptr;
-
-end LSE.Utils.Utils;
+end LSE.IO;

@@ -355,7 +355,6 @@ package body LSE.Model.IO.Turtle is
       This.Stack_Coordinate.Append (
                                     LSE.Utils.Coordinate_2D_Ptr.To_Holder (
                                       LSE.Utils.Coordinate_2D.Initialize));
-
    end Configure;
 
    procedure Draw (This : in out Instance)

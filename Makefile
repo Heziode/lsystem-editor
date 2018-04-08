@@ -4,11 +4,14 @@ KOCH_FLAKE_LEVEL=3
 all: build
 
 run:
-	./bin/lsystem-editor -i ./data/koch-flake.ls -e PS -p ./data/koch-flake-${KOCH_FLAKE_LEVEL}.ps -d ${KOCH_FLAKE_LEVEL}
+	./bin/lsystem-editor --no-gui -i ./data/koch-flake.ls -e PS -p ./koch-flake-${KOCH_FLAKE_LEVEL}.ps -d ${KOCH_FLAKE_LEVEL}
+
+run-gui:
+	./bin/lsystem-editor
 
 build:
 	gprbuild -d -p -P${PROJECT}
-	cp ./src/view/view.glade ./bin/view.glade
+	cp ./src/view/ressources/* ./bin/ressources/
 
 doc:
 	gnatdoc -P${PROJECT} --output=html --encoding=utf-8 -l
@@ -16,3 +19,4 @@ doc:
 clean:
 	rm -rf {obj,bin,doc,gnatdoc,*.db*,gpsauto.cgpr,LSystem_Editor-loc.xml}
 	mkdir {obj,bin,doc}
+	mkdir bin/ressources

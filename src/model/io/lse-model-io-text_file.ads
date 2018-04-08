@@ -29,14 +29,14 @@
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with LSE.Model.IO.Turtle_Utils;
-with LSE.Model.L_System.L_System;
 with LSE.Model.L_System.Concrete_Builder;
+with LSE.Model.L_System.L_System;
 
 use Ada.Strings.Unbounded;
 use Ada.Text_IO;
 use LSE.Model.IO.Turtle_Utils;
-use LSE.Model.L_System.L_System;
 use LSE.Model.L_System.Concrete_Builder;
+use LSE.Model.L_System.L_System;
 
 --  @description
 --  This package provide a set of methods to read and write in text file.
@@ -83,5 +83,15 @@ package LSE.Model.IO.Text_File is
    --  @param LS L-System to write
    procedure Write_LSystem (File : in out File_Type;
                             LS   : LSE.Model.L_System.L_System.Instance);
+
+   --  Save text data into a file
+   --  @param File_Path Path to the file
+   --  @param Content Content to save into the file
+   procedure Save_To_File (File_Path : String; Content : String);
+
+   --  Read text data from file
+   --  @param File_Path Path to the file
+   --  @return The content of the file
+   function Read_From_File (File_Path : String) return String;
 
 end LSE.Model.IO.Text_File;
