@@ -44,7 +44,6 @@ package body LSE.IO.Drawing_Area is
    is
       use Glib;
    begin
-      New_Path (This.Cr);
       Move_To (This.Cr,
                Gdouble (Turtle.Get_Offset_X + Turtle.Get_Margin_Right),
                Gdouble (Turtle.Get_Offset_Y + Turtle.Get_Margin_Bottom));
@@ -53,7 +52,6 @@ package body LSE.IO.Drawing_Area is
    procedure Draw (This : in out Instance)
    is
    begin
-      Close_Path (This.Cr);
       Stroke (This.Cr);
       Show_Page (This.Cr);
    end Draw;
