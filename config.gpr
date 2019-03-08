@@ -1,0 +1,11 @@
+abstract project Config is
+   switch_ada_default_conf := ("-gnatW8",
+                               "-gnata",
+                               "-gnat2012",
+                               "-gnaty",
+                               "-gnaty120",
+                               "-Wall",
+                               "-Wextra",
+                               "-Wno-maybe-uninitialized", --  To prevent gcc bug
+                               "-O3");
+end Config;

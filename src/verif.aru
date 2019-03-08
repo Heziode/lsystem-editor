@@ -1,0 +1,75 @@
+-- Required style checks:
+check unnecessary_use_clause (unused, nested, movable, qualified);
+check reduceable_scope (no_blocks use, no_blocks use_type, no_blocks use_all_type);
+check style (no_closing_name);
+check style (casing_identifier, original, titlecase);
+check style (casing_attribute, titlecase);
+check style (negative_condition);
+check style (compound_statement);
+Multiple_Elements: check style (multiple_elements);  -- Label to ease making exceptions
+check style (casing_keyword, lowercase);
+check max_nesting (7);
+check parameter_aliasing (certain);
+check simplifiable_expressions;
+check simplifiable_statements;
+check statements (untyped_for);
+check max_blank_lines (2);
+check characters (control, trailing_space);
+check assignments (groupable, given 2, ratio 100);
+check with_clauses (reduceable);
+check derivations (indicator, declaration, body_forbidden);
+
+-- Acceptable, but should be looked at:
+search parameter_aliasing (possible);
+search max_nesting (5);
+search local_hiding (not_different_families strict, "^object$", "^class$", "^instance$");
+search comments (unnamed_begin, program_unit all);
+--search usage (procedure, from_spec, not called);
+--search usage (function,  from_spec, not called);
+
+-- Check that there is no more debugging code, warn about missing (TBSL)
+-- and uncheckable code
+No_Trace         : check entities (Utilities.trace);
+No_Debug         : check entities (debug, debug.timing, tracer, tracer.timing);
+No_TBSL          : search comments (pattern, "TBSL");
+No_Unimplemented : check entities (Utilities.Unimplemented);
+search uncheckable (false_negative, missing_unit);
+
+-- Check that functions for which there is a replacement in A4G_Bugs
+-- are not used directly.
+Use_A4G_Bugs: check entities (
+   Asis.Expressions.Corresponding_Expression_Type,
+   Asis.Text.Element_Span,
+   Asis.Text.First_Line_Number,
+   Asis.Text.Last_Line_Number
+);
+
+-- Check prefered operation from Thick_Queries
+Avoid_Query: check entities (
+   Asis.Definitions.Subtype_Mark,
+   Asis.Definitions.Corresponding_Parent_Subtype
+);
+Use_Ultimate_Origin:
+   check entities (Asis.Compilation_Units.Unit_Origin);
+
+Use_Component_Definition_View:
+   check entities (Asis.Definitions.Component_Subtype_Indication);
+
+check characters (not_iso_646);
+check header_comments (minimum, 24);
+check max_line_length (120);
+
+-- Naming
+check naming_convention (Type,     not "^t_");
+check naming_convention (Regular_Constant, not "^c_");
+check naming_convention (Named_Number,     not "^c_");
+-- Title case convention, but we allow several upper case letters at the beginning:
+-- check naming_convention (All, case_sensitive "^[A-Z]+[a-z0-9]*(_[A-Z0-9]+[a-z0-9]*)*$");
+-- CamelCase convention
+check naming_convention (All, case_sensitive "^[A-Z]([A-Z0-9_]*[a-z][a-z0-9_]*[A-Z]|[a-z0-9_]*)[A-Za-z0-9_]*[A-Za-z0-9]*$");
+-- check naming_convention (Constant, case_sensitive "^[A-Z]([A-Z_]*[A-Z]+)*$");
+
+-- Replacement subprograms
+Use_Trim_All:        check entities (Ada.Strings.Wide_String.Trim);
+Use_Img_Function:    check entities (standard.integer'wide_image, thick_queries.biggest_int'wide_image);
+"Use Std interrupt": check dependencies (with, framework.interrupt_dbg);

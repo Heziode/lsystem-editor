@@ -1,0 +1,36 @@
+with "gtkada";
+with "config.gpr";
+with "core.gpr";
+
+project GUI is
+
+   Main_File := ("main.adb");
+
+   for Source_Dirs use ("src/**");
+   for Excluded_Source_Dirs use ("src/model/**", "src/utils/**");
+   for Excluded_Source_Files use ("lse.ads");
+   for Object_Dir use "obj";
+   for Exec_Dir use "bin";
+   for Main use Main_File;
+
+   package Compiler is
+      for Default_Switches ("Ada") use Config.switch_ada_default_conf;
+   end Compiler;
+
+   package Ide is
+      for Default_Switches ("adacontrol") use ("-x", "-d", "-G", "search", "-S", "1", "-f", "src/verif.aru", "-@", "src/units.txt", "-o", "result.txt", "-F", "gnat_short");
+   end Ide;
+
+   package Pretty_Printer is
+      for Switches ("main.adb") use ("-i4");
+   end Pretty_Printer;
+
+   package Builder is
+      for Executable ("main.adb") use "lsystem-editor";
+   end Builder;
+
+   package Documentation is
+      for Documentation_Dir use "doc";
+   end Documentation;
+
+end GUI;
