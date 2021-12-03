@@ -6,7 +6,9 @@ project Core is
    for Object_Dir use "obj";
 
    package Compiler is
-      for Default_Switches ("Ada") use Config.switch_ada_default_conf & ("-gnatg");
+      for Default_Switches ("Ada") use Config.switch_ada_default_conf & ("-gnatg",
+                                                                         "-gnatw_A" --  Disable warnings on "anonymous access type allocators"
+                                                                        );
    end Compiler;
 
    package Documentation is
