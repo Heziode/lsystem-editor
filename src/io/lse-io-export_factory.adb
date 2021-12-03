@@ -35,7 +35,6 @@ package body LSE.IO.Export_Factory is
                    Value : String;
                    Path  : String)
    is
-      use LSE.Model.IO.Drawing_Area.PostScript;
 
       Found : Boolean := False;
    begin
@@ -59,7 +58,6 @@ package body LSE.IO.Export_Factory is
             return ".ps";
       end case;
 
-      raise Unknown_Drawing_Area_Type;
    end Get_Extension;
 
 end LSE.IO.Export_Factory;

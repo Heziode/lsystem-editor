@@ -41,7 +41,6 @@ package body LSE.Presenter.Presenter is
    --  Constructor
    procedure Initialize (This : out Instance)
    is
-      use Ada.Directories;
       use Glib.Convert;
       use Gtk.Builder;
       use LSE.Model.IO.Turtle;
@@ -127,12 +126,10 @@ package body LSE.Presenter.Presenter is
                      Fg_Rgba     : Gdk_RGBA;
                      Have_Bg     : Boolean)
    is
-      use Glib.Convert;
       use LSE.IO.Export_Factory;
       use LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
       use LSE.Model.IO.Turtle;
       use LSE.Utils.Colors;
-      use LSE.View.View;
 
       Turtle : LSE.Model.IO.Turtle_Utils.Holder;
       Medium : LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr.Holder;

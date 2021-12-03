@@ -42,9 +42,7 @@ package LSE.Utils.Utils is
 
    package Formatted_IO is
      new Ada.Text_IO.Editing.Decimal_Output (Fixed_Point);
-   use Formatted_IO;
 
    package US_Ptr is new Ada.Containers.Indefinite_Holders (Unbounded_String);
-   use US_Ptr;
 
 end LSE.Utils.Utils;

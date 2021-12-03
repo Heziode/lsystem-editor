@@ -83,6 +83,5 @@ private
 
    package Formatted_IO is
      new Ada.Text_IO.Editing.Decimal_Output (Fixed_Point);
-   use Formatted_IO;
 
 end LSE.Utils.Colors;

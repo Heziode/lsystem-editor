@@ -41,6 +41,5 @@ package LSE.Model.L_System.Growth_Rule_Utils is
        (
         Element_Type => Instance'Class
        );
-   use P_List;
 
 end LSE.Model.L_System.Growth_Rule_Utils;
