@@ -51,7 +51,6 @@ with LSE.IO.Drawing_Area;
 with LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
 with LSE.Model.IO.Text_File;
 with LSE.View.Callbacks;
-with LSE.View.View_Ptr;
 
 package body LSE.View.View is
 
@@ -60,12 +59,9 @@ package body LSE.View.View is
    is
       pragma Unreferenced (Presenter);
       use Ada.Text_IO;
-      use Gtk.Button;
       use Gtk.Image_Menu_Item;
       use Gtk.Tool_Button;
-      use LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
       use LSE.View.Callbacks;
-      use LSE.View.View_Ptr;
 
       Bar_Menu_Item  : Gtk_Image_Menu_Item;
       Icon_Menu_Item : Gtk_Tool_Button;
@@ -451,7 +447,6 @@ package body LSE.View.View is
       use Gtk.Dialog;
       use Gtk.File_Chooser;
       use Gtk.File_Chooser_Dialog;
-      use LSE.Model.IO.Text_File;
 
       Unknown_Color : exception;
 
@@ -594,8 +589,6 @@ package body LSE.View.View is
       use Gtk.Button;
       use Gtk.Check_Button;
       use Gtk.Dialog;
-      use Gtk.Message_Dialog;
-      use LSE.View.View;
       use LSE.View.Callbacks;
 
       Builder : Gtk_Builder;

@@ -333,7 +333,6 @@ package body LSE.Model.IO.Turtle is
 
    procedure Configure (This : in out Instance)
    is
-      use Ada.Strings;
    begin
       if not This.Dry_Run then
          This.Make_Offset;
@@ -367,7 +366,6 @@ package body LSE.Model.IO.Turtle is
 
    procedure Forward (This : in out Instance; Trace : Boolean := False)
    is
-      use Ada.Float_Text_IO;
       use Ada.Numerics.Elementary_Functions;
 
       ------------------------

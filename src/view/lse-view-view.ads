@@ -185,6 +185,5 @@ private
    use P_Handlers_Widget;
    use P_Handlers_User_Callback_String;
    use P_Handlers_User_Callback_Color;
-   use P_Handlers_User_Callback_Cairo;
 
 end LSE.View.View;

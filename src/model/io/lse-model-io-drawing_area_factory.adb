@@ -35,7 +35,6 @@ package body LSE.Model.IO.Drawing_Area_Factory is
                    Value : String;
                    Path  : String)
    is
-      use LSE.Model.IO.Drawing_Area.PostScript;
 
       Unknown_Drawing_Area_Type : exception;
 

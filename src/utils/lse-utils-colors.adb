@@ -146,8 +146,6 @@ package body LSE.Utils.Colors is
 
    function RGB_To_Hex_String (R, G, B : Natural) return String
    is
-      use Ada.Strings;
-      use Ada.Strings.Fixed;
 
       Rs : String (1 .. 6);
       Gs : String (1 .. 6);

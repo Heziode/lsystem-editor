@@ -46,6 +46,5 @@ package LSE.Model.Grammar.Symbol_Utils is
        (
         Element_Type => Ptr.Holder
        );
-   use P_List;
 
 end LSE.Model.Grammar.Symbol_Utils;
