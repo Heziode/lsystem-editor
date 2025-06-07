@@ -1,7 +1,7 @@
 name = "lsystem_editor"
 description = "L-Systems editor in Ada"
 version = "1.0.0"
-project-files = ["lsystem_editor.gpr"]
+project-files = ["LSystem_Editor.gpr"]
 
 long-description = """
 <img src="https://github.com/Heziode/lsystem-editor/blob/master/share/lsystem_editor/ressources/icon.png?raw=true" alt="App Icon">
