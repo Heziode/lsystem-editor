@@ -3,22 +3,24 @@
 This project was designed for an university project.
 
 
-
 ## Build
 
+### Manual
+
 To build the project, you need to have Ada and GtkAda installed. This project depend to [GNAT Lib](https://www.adacore.com/download).
-
-
 
 To build the project, run `make` at the root of the project.
 
 
-
-## Launch
+#### Launch
 
 The executable is place into `bin` folder. You can execute or just run `make run-gui` to launch GUI or `make run` to launch the program in no-gui mode that will create a PostScript file of a koch-flake at development level of 3.
 
+### With Alire
 
+To build the project with Alire, run `alr build` at the root of the project.
+
+You can directly install this project with `alr install lsystem_editor`.
 
 ## License
 
