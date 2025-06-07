@@ -40,6 +40,7 @@ with Gtk.Widget;
 with Gtk.Window;
 with LSE.Presenter.Presenter;
 with LSE.Utils.Utils;
+with LSE_Resources;
 
 use Ada.Strings.Unbounded;
 use Cairo;
@@ -61,7 +62,7 @@ use LSE.Utils.Utils.US_Ptr;
 package LSE.View.View is
 
    --  Location of galde view
-   Main_UI           : constant String := "ressources/view.glade";
+   Main_UI           : constant String := LSE_Resources.Resource_Path & "ressources/view.glade";
 
    --  Default app name
    App_Name          : constant String := "Lindenmayer system editor";
@@ -73,7 +74,7 @@ package LSE.View.View is
    Default_LS_Extension : constant String := ".ls";
 
    --  Location of the icon of the app
-   App_Icon_Location : constant String := "ressources/icon.png";
+   App_Icon_Location : constant String := LSE_Resources.Resource_Path & "ressources/icon.png";
 
    --  Raise when app icon cannot be loaded
    ICON_NOT_LOADED : exception;

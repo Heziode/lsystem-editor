@@ -51,6 +51,7 @@ with LSE.IO.Drawing_Area;
 with LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
 with LSE.Model.IO.Text_File;
 with LSE.View.Callbacks;
+with LSE_Resources;
 
 package body LSE.View.View is
 
@@ -600,7 +601,7 @@ package body LSE.View.View is
       Color   : Gtk_Color_Button;
    begin
       Gtk_New_From_File (Builder, Locale_To_UTF8
-                         ("ressources/dialog_export.glade"));
+                         (LSE_Resources.Resource_Path & "ressources/dialog_export.glade"));
       Dialog := Gtk_Dialog (Builder.Get_Object ("dialog_export"));
       Btn_Ko := Gtk_Button (Builder.Get_Object ("btn_cancel"));
       Btn_Ok := Gtk_Button (Builder.Get_Object ("btn_export"));

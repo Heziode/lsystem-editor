@@ -40,6 +40,7 @@ with LSE.Model.L_System.Concrete_Builder;
 with LSE.Model.L_System.L_System;
 with LSE.Presenter.Presenter;
 with LSE.View.View;
+with LSE_Resources;
 
 use Ada.Command_Line;
 use Ada.Text_IO;
@@ -61,7 +62,7 @@ use LSE.View.View;
 --
 procedure Main is
 
-   Main_UI  : constant String := "ressources/view.glade";
+   Main_UI  : constant String := LSE_Resources.Resource_Path & "ressources/view.glade";
    pragma Unreferenced (Main_UI);
    Exec_Dir : constant String := Dir_Name (Command_Name);
    pragma Unreferenced (Exec_Dir);

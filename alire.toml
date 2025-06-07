@@ -14,3 +14,4 @@ executables = ["lsystem-editor"]
 
 [[depends-on]]
 gtkada = "^25.0.1"
+resources = "~0.1.0"
