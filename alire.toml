@@ -1,0 +1,16 @@
+name = "lsystem_editor"
+description = "L-Systems editor in Ada"
+version = "0.1.0-dev"
+project-files = ["lsystem_editor.gpr"]
+
+authors = ["Heziode"]
+maintainers = ["Heziode <heziode@protonmail.com>"]
+maintainers-logins = ["heziode"]
+licenses = "MIT"
+website = "https://github.com/Heziode/lsystem-editor"
+tags = ["gtk", "gtk3", "ada", "l-systems", "gtkada", "l-system"]
+
+executables = ["lsystem-editor"]
+
+[[depends-on]]
+gtkada = "^25.0.1"

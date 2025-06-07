@@ -14,4 +14,8 @@ gen
 ### Project structure
 bin
 doc
+obj/obj/
+/bin/
+/alire/
+/config/
 obj
