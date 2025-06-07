@@ -52,6 +52,7 @@ with LSE.Model.IO.Drawing_Area.Drawing_Area_Ptr;
 with LSE.Model.IO.Text_File;
 with LSE.View.Callbacks;
 with LSE_Resources;
+with Lsystem_Editor_Config;
 
 package body LSE.View.View is
 
@@ -375,7 +376,7 @@ package body LSE.View.View is
       Dialog.Set_Program_Name ("Lindenmayer system editor");
       Dialog.Set_Comments ("This program is an editor of L-System");
       Dialog.Set_License_Type (License_Mit_X11);
-      Dialog.Set_Version ("1.0.0");
+      Dialog.Set_Version (Lsystem_Editor_Config.Crate_Version);
 
       Dialog.Set_Website ("https://github.com/Heziode/lsystem-editor");
       Dialog.Set_Website_Label ("Source-code");
