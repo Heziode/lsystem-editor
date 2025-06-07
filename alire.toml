@@ -8,7 +8,7 @@ maintainers = ["Heziode <heziode@protonmail.com>"]
 maintainers-logins = ["heziode"]
 licenses = "MIT"
 website = "https://github.com/Heziode/lsystem-editor"
-tags = ["gtk", "gtk3", "ada", "l-systems", "gtkada", "l-system"]
+tags = ["gtk", "gtk3", "ada", "l-systems", "gtkada", "l-system", "editor", "gui"]
 
 executables = ["lsystem-editor"]
 
